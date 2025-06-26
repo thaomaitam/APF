@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">KTAF</string>
+    <string name="xposed_desc">Module hỗ trợ fake devices</string>
+</resources>
