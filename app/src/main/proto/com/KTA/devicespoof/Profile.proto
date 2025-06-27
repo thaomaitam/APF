@@ -7,8 +7,9 @@ option java_package = "com.KTA.devicespoof.profile";
 option java_outer_classname = "ProfileProto";
 
 message Profile {
-  string name = 1;
-  DeviceInfo device_info = 2;
+  string id = 1; // ID duy nhất cho profile
+  string name = 2;
+  DeviceInfo device_info = 3;
 }
 
 message DeviceInfo {

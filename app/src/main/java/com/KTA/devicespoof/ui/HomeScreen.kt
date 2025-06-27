@@ -9,24 +9,21 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.KTA.devicespoof.profile.ProfileManager
-import com.KTA.devicespoof.hook.HookManager
 
 @Composable
 fun HomeScreen(
-    profileManager: ProfileManager,
-    hookManager: HookManager,
+    isModuleEnabled: Boolean,
+    appMappings: Map<String, String>,
+    getProfileName: (String) -> String,
+    onToggleModule: (Boolean) -> Unit,
     onNavigateToProfileManagement: () -> Unit,
     onNavigateToAppMapping: () -> Unit
 ) {
-    var isModuleEnabled by remember { mutableStateOf(hookManager.isHookActive()) }
-    val appMappings by remember { mutableStateOf(profileManager.getAllAppMappings()) }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
             text = "Android Profile Faker",
@@ -34,17 +31,10 @@ fun HomeScreen(
         )
 
         Button(
-            onClick = {
-                isModuleEnabled = !isModuleEnabled
-                if (isModuleEnabled) {
-                    hookManager.enableAllHooks()
-                } else {
-                    hookManager.disableAllHooks()
-                }
-            },
+            onClick = { onToggleModule(!isModuleEnabled) },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(if (isModuleEnabled) "Disable Module" else "Enable Module")
+            Text(if (isModuleEnabled) "Disable Module Globally" else "Enable Module Globally")
         }
 
         Row(
@@ -71,26 +61,29 @@ fun HomeScreen(
             modifier = Modifier.padding(top = 8.dp)
         )
 
-        LazyColumn(
-            modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
-            items(appMappings.entries.toList()) { (appPackage, profileId) ->
-                val profile = profileManager.getProfileById(profileId)
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { onNavigateToAppMapping() }
-                ) {
-                    Row(
+        if (appMappings.isEmpty()) {
+            Text("No applications are mapped to a profile yet.")
+        } else {
+            LazyColumn(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(appMappings.entries.toList()) { (appPackage, profileId) ->
+                    Card(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(16.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                            .clickable { onNavigateToAppMapping() }
                     ) {
-                        Text(text = appPackage)
-                        Text(text = profile?.name ?: "No Profile")
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(text = appPackage, modifier = Modifier.weight(1f))
+                            Text(text = getProfileName(profileId))
+                        }
                     }
                 }
             }

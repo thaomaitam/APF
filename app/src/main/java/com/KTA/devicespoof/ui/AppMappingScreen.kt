@@ -10,20 +10,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.KTA.devicespoof.profile.Profile
-import com.KTA.devicespoof.profile.ProfileManager
 import com.KTA.devicespoof.utils.Logger
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppMappingScreen(
-    profileManager: ProfileManager,
+    profiles: List<Profile>,
     installedApps: List<String>,
-    onProfileSelected: (String, String?) -> Unit
+    appMappings: Map<String, String>,
+    onMapAppToProfile: (appPackage: String, profileId: String?) -> Unit
 ) {
     val context = LocalContext.current
-    val profiles by remember { mutableStateOf(profileManager.getAllProfiles()) }
     var searchQuery by remember { mutableStateOf("") }
 
-    // Filter apps based on search query
     val filteredApps = installedApps.filter { packageName ->
         if (searchQuery.isBlank()) true
         else {
@@ -33,7 +32,6 @@ fun AppMappingScreen(
                 packageName.contains(searchQuery, ignoreCase = true) ||
                         appLabel.contains(searchQuery, ignoreCase = true)
             } catch (e: PackageManager.NameNotFoundException) {
-                Logger.error("AppMappingScreen: Failed to get app info for $packageName", e)
                 false
             }
         }
@@ -62,37 +60,38 @@ fun AppMappingScreen(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(filteredApps) { packageName ->
+            items(filteredApps, key = { it }) { packageName ->
                 AppMappingItem(
                     packageName = packageName,
                     profiles = profiles,
-                    profileManager = profileManager,
-                    onProfileSelected = onProfileSelected
+                    currentProfileId = appMappings[packageName],
+                    onProfileSelected = onMapAppToProfile
                 )
             }
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppMappingItem(
     packageName: String,
     profiles: List<Profile>,
-    profileManager: ProfileManager,
+    currentProfileId: String?,
     onProfileSelected: (String, String?) -> Unit
 ) {
     val context = LocalContext.current
-    var selectedProfileId by remember { mutableStateOf(profileManager.getAllAppMappings()[packageName]) }
-    var appLabel by remember { mutableStateOf(packageName) }
     var expanded by remember { mutableStateOf(false) }
 
-    LaunchedEffect(packageName) {
-        try {
-            val appInfo = context.packageManager.getApplicationInfo(packageName, 0)
-            appLabel = context.packageManager.getApplicationLabel(appInfo).toString()
-        } catch (e: PackageManager.NameNotFoundException) {
-            Logger.error("AppMappingItem: Failed to get app label for $packageName", e)
-        }
+    val appLabel by remember(packageName) {
+        mutableStateOf(
+            try {
+                val appInfo = context.packageManager.getApplicationInfo(packageName, 0)
+                context.packageManager.getApplicationLabel(appInfo).toString()
+            } catch (e: PackageManager.NameNotFoundException) {
+                packageName
+            }
+        )
     }
 
     Card(
@@ -119,8 +118,8 @@ fun AppMappingItem(
                 onExpandedChange = { expanded = !expanded },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                TextField(
-                    value = profiles.find { it.id == selectedProfileId }?.name ?: "None",
+                OutlinedTextField(
+                    value = profiles.find { it.id == currentProfileId }?.name ?: "None",
                     onValueChange = {},
                     readOnly = true,
                     label = { Text("Select Profile") },
@@ -138,9 +137,7 @@ fun AppMappingItem(
                     DropdownMenuItem(
                         text = { Text("None") },
                         onClick = {
-                            selectedProfileId = null
                             onProfileSelected(packageName, null)
-                            Logger.log("AppMappingItem: Removed mapping for $packageName")
                             expanded = false
                         }
                     )
@@ -148,9 +145,7 @@ fun AppMappingItem(
                         DropdownMenuItem(
                             text = { Text(profile.name) },
                             onClick = {
-                                selectedProfileId = profile.id
                                 onProfileSelected(packageName, profile.id)
-                                Logger.log("AppMappingItem: Mapped $packageName to profile ${profile.name} (ID: ${profile.id})")
                                 expanded = false
                             }
                         )

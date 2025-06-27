@@ -19,7 +19,8 @@ fun ProfileEditorScreen(
     profileManager: ProfileManager,
     profileId: String?,
     onSave: () -> Unit,
-    onCancel: () -> Unit
+    onCancel: () -> Unit,
+    onDelete: () -> Unit
 ) {
     var profileName by remember { mutableStateOf("") }
     var imei1 by remember { mutableStateOf("") }
@@ -52,7 +53,7 @@ fun ProfileEditorScreen(
     var simSubscriberId by remember { mutableStateOf("") }
     var simCountry by remember { mutableStateOf("") }
     var simMnc by remember { mutableStateOf("") }
-    var errorMessage by remember { mutableStateOf("") }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
     var showDeleteDialog by remember { mutableStateOf(false) }
 
     // Load existing profile if editing
@@ -61,37 +62,37 @@ fun ProfileEditorScreen(
             val profile = profileManager.getProfileById(profileId)
             profile?.let {
                 profileName = it.name
-                it.deviceInfo?.let { deviceInfo ->
-                    imei1 = deviceInfo.imei1 ?: ""
-                    imei2 = deviceInfo.imei2 ?: ""
-                    androidId = deviceInfo.androidId ?: ""
-                    buildFingerprint = deviceInfo.buildFingerprint ?: ""
-                    buildDevice = deviceInfo.buildDevice ?: ""
-                    wifiMac = deviceInfo.wifiMac ?: ""
-                    wifiSsid = deviceInfo.wifiSsid ?: ""
-                    wifiBssid = deviceInfo.wifiBssid ?: ""
-                    bluetoothMac = deviceInfo.bluetoothMac ?: ""
-                    buildProduct = deviceInfo.buildProduct ?: ""
-                    simSerial = deviceInfo.simSerial ?: ""
-                    mobileNumber = deviceInfo.mobileNumber ?: ""
-                    simOperator = deviceInfo.simOperator ?: ""
-                    adsId = deviceInfo.adsId ?: ""
-                    mediaDrmId = deviceInfo.mediaDrmId ?: ""
-                    gsfId = deviceInfo.gsfId ?: ""
-                    buildBrand = deviceInfo.buildBrand ?: ""
-                    buildHardware = deviceInfo.buildHardware ?: ""
-                    buildBoard = deviceInfo.buildBoard ?: ""
-                    buildId = deviceInfo.buildId ?: ""
-                    buildDisplay = deviceInfo.buildDisplay ?: ""
-                    buildType = deviceInfo.buildType ?: ""
-                    buildTags = deviceInfo.buildTags ?: ""
-                    buildVersionRelease = deviceInfo.buildVersionRelease ?: ""
-                    buildVersionIncremental = deviceInfo.buildVersionIncremental ?: ""
-                    buildVersionCodename = deviceInfo.buildVersionCodename ?: ""
-                    buildVersionSecurityPatch = deviceInfo.buildVersionSecurityPatch ?: ""
-                    simSubscriberId = deviceInfo.simSubscriberId ?: ""
-                    simCountry = deviceInfo.simCountry ?: ""
-                    simMnc = deviceInfo.simMnc ?: ""
+                it.deviceInfo.let { deviceInfo ->
+                    imei1 = deviceInfo.imei1
+                    imei2 = deviceInfo.imei2
+                    androidId = deviceInfo.androidId
+                    buildFingerprint = deviceInfo.buildFingerprint
+                    buildDevice = deviceInfo.buildDevice
+                    wifiMac = deviceInfo.wifiMac
+                    wifiSsid = deviceInfo.wifiSsid
+                    wifiBssid = deviceInfo.wifiBssid
+                    bluetoothMac = deviceInfo.bluetoothMac
+                    buildProduct = deviceInfo.buildProduct
+                    simSerial = deviceInfo.simSerial
+                    mobileNumber = deviceInfo.mobileNumber
+                    simOperator = deviceInfo.simOperator
+                    adsId = deviceInfo.adsId
+                    mediaDrmId = deviceInfo.mediaDrmId
+                    gsfId = deviceInfo.gsfId
+                    buildBrand = deviceInfo.buildBrand
+                    buildHardware = deviceInfo.buildHardware
+                    buildBoard = deviceInfo.buildBoard
+                    buildId = deviceInfo.buildId
+                    buildDisplay = deviceInfo.buildDisplay
+                    buildType = deviceInfo.buildType
+                    buildTags = deviceInfo.buildTags
+                    buildVersionRelease = deviceInfo.buildVersionRelease
+                    buildVersionIncremental = deviceInfo.buildVersionIncremental
+                    buildVersionCodename = deviceInfo.buildVersionCodename
+                    buildVersionSecurityPatch = deviceInfo.buildVersionSecurityPatch
+                    simSubscriberId = deviceInfo.simSubscriberId
+                    simCountry = deviceInfo.simCountry
+                    simMnc = deviceInfo.simMnc
                 }
             }
         }
@@ -102,26 +103,22 @@ fun ProfileEditorScreen(
     val isImei1Valid = imei1.isBlank() || imei1.matches(Regex("\\d{15}"))
     val isImei2Valid = imei2.isBlank() || imei2.matches(Regex("\\d{15}"))
     val isAndroidIdValid = androidId.isBlank() || androidId.matches(Regex("[0-9a-f]{16}"))
-    val isWifiMacValid = wifiMac.isBlank() || wifiMac.matches(Regex("[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}"))
-    val isWifiBssidValid = wifiBssid.isBlank() || wifiBssid.matches(Regex("[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}"))
-    val isBluetoothMacValid = bluetoothMac.isBlank() || bluetoothMac.matches(Regex("[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}"))
+    val isWifiMacValid = wifiMac.isBlank() || wifiMac.matches(Regex("([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}"))
+    val isWifiBssidValid = wifiBssid.isBlank() || wifiBssid.matches(Regex("([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}"))
+    val isBluetoothMacValid = bluetoothMac.isBlank() || bluetoothMac.matches(Regex("([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}"))
     val isSimSerialValid = simSerial.isBlank() || simSerial.matches(Regex("\\d{19,20}"))
     val isMobileNumberValid = mobileNumber.isBlank() || mobileNumber.matches(Regex("\\+?\\d{10,15}"))
     val isAdsIdValid = adsId.isBlank() || adsId.matches(Regex("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"))
     val isGsfIdValid = gsfId.isBlank() || gsfId.matches(Regex("[0-9a-f]{16}"))
     val isBuildTypeValid = buildType.isBlank() || buildType.matches(Regex("user|userdebug|eng"))
-    val isBuildVersionReleaseValid = buildVersionRelease.isBlank() || buildVersionRelease.matches(Regex("\\d+\\.\\d+\\.?\\d*"))
-    val isBuildVersionSecurityPatchValid = buildVersionSecurityPatch.isBlank() || buildVersionSecurityPatch.matches(Regex("\\d{4}-\\d{2}-\\d{2}"))
     val isSimSubscriberIdValid = simSubscriberId.isBlank() || simSubscriberId.matches(Regex("\\d{15,20}"))
     val isSimCountryValid = simCountry.isBlank() || simCountry.matches(Regex("[a-zA-Z]{2}"))
     val isSimMncValid = simMnc.isBlank() || simMnc.matches(Regex("\\d{5,6}|\\d{2,3}"))
 
-    val isFormValid = isProfileNameValid &&
-            isImei1Valid && isImei2Valid && isAndroidIdValid &&
+    val isFormValid = isProfileNameValid && isImei1Valid && isImei2Valid && isAndroidIdValid &&
             isWifiMacValid && isWifiBssidValid && isBluetoothMacValid &&
             isSimSerialValid && isMobileNumberValid && isAdsIdValid &&
-            isGsfIdValid && isBuildTypeValid && isBuildVersionReleaseValid &&
-            isBuildVersionSecurityPatchValid && isSimSubscriberIdValid &&
+            isGsfIdValid && isBuildTypeValid && isSimSubscriberIdValid &&
             isSimCountryValid && isSimMncValid
 
     Column(
@@ -136,14 +133,15 @@ fun ProfileEditorScreen(
             style = MaterialTheme.typography.headlineSmall
         )
 
-        if (errorMessage.isNotBlank()) {
+        errorMessage?.let {
             Text(
-                text = errorMessage,
+                text = it,
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.bodyMedium
             )
         }
 
+        // --- Input Fields ---
         OutlinedTextField(
             value = profileName,
             onValueChange = { profileName = it },
@@ -182,302 +180,100 @@ fun ProfileEditorScreen(
             supportingText = { if (!isAndroidIdValid) Text("Must be 16 hex characters") }
         )
 
-        OutlinedTextField(
-            value = buildFingerprint,
-            onValueChange = { buildFingerprint = it },
-            label = { Text("Build Fingerprint") },
-            modifier = Modifier.fillMaxWidth()
-        )
+        OutlinedTextField(value = buildFingerprint, onValueChange = { buildFingerprint = it }, label = { Text("Build Fingerprint") }, modifier = Modifier.fillMaxWidth())
+        OutlinedTextField(value = buildDevice, onValueChange = { buildDevice = it }, label = { Text("Build Device") }, modifier = Modifier.fillMaxWidth())
+        OutlinedTextField(value = buildProduct, onValueChange = { buildProduct = it }, label = { Text("Build Product") }, modifier = Modifier.fillMaxWidth())
+        OutlinedTextField(value = buildBrand, onValueChange = { buildBrand = it }, label = { Text("Build Brand") }, modifier = Modifier.fillMaxWidth())
+        OutlinedTextField(value = buildHardware, onValueChange = { buildHardware = it }, label = { Text("Build Hardware") }, modifier = Modifier.fillMaxWidth())
+        OutlinedTextField(value = buildBoard, onValueChange = { buildBoard = it }, label = { Text("Build Board") }, modifier = Modifier.fillMaxWidth())
+        OutlinedTextField(value = buildId, onValueChange = { buildId = it }, label = { Text("Build ID") }, modifier = Modifier.fillMaxWidth())
+        OutlinedTextField(value = buildDisplay, onValueChange = { buildDisplay = it }, label = { Text("Build Display") }, modifier = Modifier.fillMaxWidth())
+        OutlinedTextField(value = buildTags, onValueChange = { buildTags = it }, label = { Text("Build Tags") }, modifier = Modifier.fillMaxWidth())
+        OutlinedTextField(value = buildType, onValueChange = { buildType = it }, label = { Text("Build Type") }, modifier = Modifier.fillMaxWidth(), isError = !isBuildTypeValid, supportingText = { if (!isBuildTypeValid) Text("user, userdebug, or eng") })
+        OutlinedTextField(value = buildVersionRelease, onValueChange = { buildVersionRelease = it }, label = { Text("Build Version Release") }, modifier = Modifier.fillMaxWidth())
+        OutlinedTextField(value = buildVersionIncremental, onValueChange = { buildVersionIncremental = it }, label = { Text("Build Version Incremental") }, modifier = Modifier.fillMaxWidth())
+        OutlinedTextField(value = buildVersionCodename, onValueChange = { buildVersionCodename = it }, label = { Text("Build Version Codename") }, modifier = Modifier.fillMaxWidth())
+        OutlinedTextField(value = buildVersionSecurityPatch, onValueChange = { buildVersionSecurityPatch = it }, label = { Text("Build Version Security Patch") }, modifier = Modifier.fillMaxWidth())
 
-        OutlinedTextField(
-            value = buildDevice,
-            onValueChange = { buildDevice = it },
-            label = { Text("Build Device") },
-            modifier = Modifier.fillMaxWidth()
-        )
+        OutlinedTextField(value = wifiMac, onValueChange = { wifiMac = it }, label = { Text("Wi-Fi MAC") }, modifier = Modifier.fillMaxWidth(), isError = !isWifiMacValid, supportingText = { if (!isWifiMacValid) Text("XX:XX:XX:XX:XX:XX") })
+        OutlinedTextField(value = wifiSsid, onValueChange = { wifiSsid = it }, label = { Text("Wi-Fi SSID") }, modifier = Modifier.fillMaxWidth())
+        OutlinedTextField(value = wifiBssid, onValueChange = { wifiBssid = it }, label = { Text("Wi-Fi BSSID") }, modifier = Modifier.fillMaxWidth(), isError = !isWifiBssidValid, supportingText = { if (!isWifiBssidValid) Text("XX:XX:XX:XX:XX:XX") })
+        OutlinedTextField(value = bluetoothMac, onValueChange = { bluetoothMac = it }, label = { Text("Bluetooth MAC") }, modifier = Modifier.fillMaxWidth(), isError = !isBluetoothMacValid, supportingText = { if (!isBluetoothMacValid) Text("XX:XX:XX:XX:XX:XX") })
 
-        OutlinedTextField(
-            value = wifiMac,
-            onValueChange = { wifiMac = it },
-            label = { Text("Wi-Fi MAC") },
-            modifier = Modifier.fillMaxWidth(),
-            isError = !isWifiMacValid,
-            supportingText = { if (!isWifiMacValid) Text("Must be XX:XX:XX:XX:XX:XX") }
-        )
+        OutlinedTextField(value = simSerial, onValueChange = { simSerial = it }, label = { Text("SIM Serial") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), modifier = Modifier.fillMaxWidth(), isError = !isSimSerialValid, supportingText = { if (!isSimSerialValid) Text("19-20 digits") })
+        OutlinedTextField(value = mobileNumber, onValueChange = { mobileNumber = it }, label = { Text("Mobile Number") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone), modifier = Modifier.fillMaxWidth(), isError = !isMobileNumberValid, supportingText = { if (!isMobileNumberValid) Text("10-15 digits, optional +") })
+        OutlinedTextField(value = simOperator, onValueChange = { simOperator = it }, label = { Text("SIM Operator Name") }, modifier = Modifier.fillMaxWidth())
+        OutlinedTextField(value = simSubscriberId, onValueChange = { simSubscriberId = it }, label = { Text("SIM Subscriber ID (IMSI)") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), modifier = Modifier.fillMaxWidth(), isError = !isSimSubscriberIdValid, supportingText = { if (!isSimSubscriberIdValid) Text("15-20 digits") })
+        OutlinedTextField(value = simCountry, onValueChange = { simCountry = it }, label = { Text("SIM Country ISO") }, modifier = Modifier.fillMaxWidth(), isError = !isSimCountryValid, supportingText = { if (!isSimCountryValid) Text("2-letter ISO code") })
+        OutlinedTextField(value = simMnc, onValueChange = { simMnc = it }, label = { Text("SIM MCC+MNC or MNC") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), modifier = Modifier.fillMaxWidth(), isError = !isSimMncValid, supportingText = { if (!isSimMncValid) Text("5-6 digits (MCC+MNC) or 2-3 (MNC)") })
 
-        OutlinedTextField(
-            value = wifiSsid,
-            onValueChange = { wifiSsid = it },
-            label = { Text("Wi-Fi SSID") },
-            modifier = Modifier.fillMaxWidth()
-        )
+        OutlinedTextField(value = adsId, onValueChange = { adsId = it }, label = { Text("Advertising ID") }, modifier = Modifier.fillMaxWidth(), isError = !isAdsIdValid, supportingText = { if (!isAdsIdValid) Text("Valid UUID format") })
+        OutlinedTextField(value = mediaDrmId, onValueChange = { mediaDrmId = it }, label = { Text("Media DRM ID") }, modifier = Modifier.fillMaxWidth())
+        OutlinedTextField(value = gsfId, onValueChange = { gsfId = it }, label = { Text("GSF ID") }, modifier = Modifier.fillMaxWidth(), isError = !isGsfIdValid, supportingText = { if (!isGsfIdValid) Text("16 hex characters") })
 
-        OutlinedTextField(
-            value = wifiBssid,
-            onValueChange = { wifiBssid = it },
-            label = { Text("Wi-Fi BSSID") },
-            modifier = Modifier.fillMaxWidth(),
-            isError = !isWifiBssidValid,
-            supportingText = { if (!isWifiBssidValid) Text("Must be XX:XX:XX:XX:XX:XX") }
-        )
-
-        OutlinedTextField(
-            value = bluetoothMac,
-            onValueChange = { bluetoothMac = it },
-            label = { Text("Bluetooth MAC") },
-            modifier = Modifier.fillMaxWidth(),
-            isError = !isBluetoothMacValid,
-            supportingText = { if (!isBluetoothMacValid) Text("Must be XX:XX:XX:XX:XX:XX") }
-        )
-
-        OutlinedTextField(
-            value = buildProduct,
-            onValueChange = { buildProduct = it },
-            label = { Text("Build Product") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        OutlinedTextField(
-            value = simSerial,
-            onValueChange = { simSerial = it },
-            label = { Text("SIM Serial") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            modifier = Modifier.fillMaxWidth(),
-            isError = !isSimSerialValid,
-            supportingText = { if (!isSimSerialValid) Text("Must be 19-20 digits") }
-        )
-
-        OutlinedTextField(
-            value = mobileNumber,
-            onValueChange = { mobileNumber = it },
-            label = { Text("Mobile Number") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-            modifier = Modifier.fillMaxWidth(),
-            isError = !isMobileNumberValid,
-            supportingText = { if (!isMobileNumberValid) Text("Must be 10-15 digits, optional +") }
-        )
-
-        OutlinedTextField(
-            value = simOperator,
-            onValueChange = { simOperator = it },
-            label = { Text("SIM Operator Name") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        OutlinedTextField(
-            value = adsId,
-            onValueChange = { adsId = it },
-            label = { Text("Advertising ID") },
-            modifier = Modifier.fillMaxWidth(),
-            isError = !isAdsIdValid,
-            supportingText = { if (!isAdsIdValid) Text("Must be a valid UUID") }
-        )
-
-        OutlinedTextField(
-            value = mediaDrmId,
-            onValueChange = { mediaDrmId = it },
-            label = { Text("Media DRM ID") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        OutlinedTextField(
-            value = gsfId,
-            onValueChange = { gsfId = it },
-            label = { Text("GSF ID") },
-            modifier = Modifier.fillMaxWidth(),
-            isError = !isGsfIdValid,
-            supportingText = { if (!isGsfIdValid) Text("Must be 16 hex characters") }
-        )
-
-        OutlinedTextField(
-            value = buildBrand,
-            onValueChange = { buildBrand = it },
-            label = { Text("Build Brand") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        OutlinedTextField(
-            value = buildHardware,
-            onValueChange = { buildHardware = it },
-            label = { Text("Build Hardware") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        OutlinedTextField(
-            value = buildBoard,
-            onValueChange = { buildBoard = it },
-            label = { Text("Build Board") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        OutlinedTextField(
-            value = buildId,
-            onValueChange = { buildId = it },
-            label = { Text("Build ID") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        OutlinedTextField(
-            value = buildDisplay,
-            onValueChange = { buildDisplay = it },
-            label = { Text("Build Display") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        OutlinedTextField(
-            value = buildType,
-            onValueChange = { buildType = it },
-            label = { Text("Build Type") },
-            modifier = Modifier.fillMaxWidth(),
-            isError = !isBuildTypeValid,
-            supportingText = { if (!isBuildTypeValid) Text("Must be user, userdebug, or eng") }
-        )
-
-        OutlinedTextField(
-            value = buildTags,
-            onValueChange = { buildTags = it },
-            label = { Text("Build Tags") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        OutlinedTextField(
-            value = buildVersionRelease,
-            onValueChange = { buildVersionRelease = it },
-            label = { Text("Build Version Release") },
-            modifier = Modifier.fillMaxWidth(),
-            isError = !isBuildVersionReleaseValid,
-            supportingText = { if (!isBuildVersionReleaseValid) Text("Must be X.Y or X.Y.Z") }
-        )
-
-        OutlinedTextField(
-            value = buildVersionIncremental,
-            onValueChange = { buildVersionIncremental = it },
-            label = { Text("Build Version Incremental") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        OutlinedTextField(
-            value = buildVersionCodename,
-            onValueChange = { buildVersionCodename = it },
-            label = { Text("Build Version Codename") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        OutlinedTextField(
-            value = buildVersionSecurityPatch,
-            onValueChange = { buildVersionSecurityPatch = it },
-            label = { Text("Build Version Security Patch") },
-            modifier = Modifier.fillMaxWidth(),
-            isError = !isBuildVersionSecurityPatchValid,
-            supportingText = { if (!isBuildVersionSecurityPatchValid) Text("Must be YYYY-MM-DD") }
-        )
-
-        OutlinedTextField(
-            value = simSubscriberId,
-            onValueChange = { simSubscriberId = it },
-            label = { Text("SIM Subscriber ID") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            modifier = Modifier.fillMaxWidth(),
-            isError = !isSimSubscriberIdValid,
-            supportingText = { if (!isSimSubscriberIdValid) Text("Must be 15-20 digits") }
-        )
-
-        OutlinedTextField(
-            value = simCountry,
-            onValueChange = { simCountry = it },
-            label = { Text("SIM Country ISO") },
-            modifier = Modifier.fillMaxWidth(),
-            isError = !isSimCountryValid,
-            supportingText = { if (!isSimCountryValid) Text("Must be 2-letter ISO code") }
-        )
-
-        OutlinedTextField(
-            value = simMnc,
-            onValueChange = { simMnc = it },
-            label = { Text("SIM MCC+MNC or MNC") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            modifier = Modifier.fillMaxWidth(),
-            isError = !isSimMncValid,
-            supportingText = { if (!isSimMncValid) Text("Must be 5-6 digits (MCC+MNC) or 2-3 digits (MNC)") }
-        )
-
+        // --- Action Buttons ---
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Button(
                 onClick = {
-                    when {
-                        !isProfileNameValid -> errorMessage = "Profile name is required"
-                        !isImei1Valid -> errorMessage = "IMEI 1 must be 15 digits"
-                        !isImei2Valid -> errorMessage = "IMEI 2 must be 15 digits"
-                        !isAndroidIdValid -> errorMessage = "Android ID must be 16 hexadecimal characters"
-                        !isWifiMacValid -> errorMessage = "Wi-Fi MAC must be in format XX:XX:XX:XX:XX:XX"
-                        !isWifiBssidValid -> errorMessage = "Wi-Fi BSSID must be in format XX:XX:XX:XX:XX:XX"
-                        !isBluetoothMacValid -> errorMessage = "Bluetooth MAC must be in format XX:XX:XX:XX:XX:XX"
-                        !isSimSerialValid -> errorMessage = "SIM Serial must be 19-20 digits"
-                        !isMobileNumberValid -> errorMessage = "Mobile Number must be 10-15 digits, optionally starting with +"
-                        !isAdsIdValid -> errorMessage = "Advertising ID must be a valid UUID"
-                        !isGsfIdValid -> errorMessage = "GSF ID must be 16 hexadecimal characters"
-                        !isBuildTypeValid -> errorMessage = "Build Type must be user, userdebug, or eng"
-                        !isBuildVersionReleaseValid -> errorMessage = "Build Version Release must be in format X.Y or X.Y.Z"
-                        !isBuildVersionSecurityPatchValid -> errorMessage = "Security Patch must be in format YYYY-MM-DD"
-                        !isSimSubscriberIdValid -> errorMessage = "SIM Subscriber ID must be 15-20 digits"
-                        !isSimCountryValid -> errorMessage = "SIM Country ISO must be a 2-letter code"
-                        !isSimMncValid -> errorMessage = "SIM MCC+MNC must be 5-6 digits or MNC must be 2-3 digits"
-                        else -> {
-                            val deviceInfo = DeviceInfo.newBuilder()
-                                .setImei1(imei1.takeIf { it.isNotBlank() })
-                                .setImei2(imei2.takeIf { it.isNotBlank() })
-                                .setAndroidId(androidId.takeIf { it.isNotBlank() })
-                                .setBuildFingerprint(buildFingerprint.takeIf { it.isNotBlank() })
-                                .setBuildDevice(buildDevice.takeIf { it.isNotBlank() })
-                                .setWifiMac(wifiMac.takeIf { it.isNotBlank() })
-                                .setWifiSsid(wifiSsid.takeIf { it.isNotBlank() })
-                                .setWifiBssid(wifiBssid.takeIf { it.isNotBlank() })
-                                .setBluetoothMac(bluetoothMac.takeIf { it.isNotBlank() })
-                                .setBuildProduct(buildProduct.takeIf { it.isNotBlank() })
-                                .setSimSerial(simSerial.takeIf { it.isNotBlank() })
-                                .setMobileNumber(mobileNumber.takeIf { it.isNotBlank() })
-                                .setSimOperator(simOperator.takeIf { it.isNotBlank() })
-                                .setAdsId(adsId.takeIf { it.isNotBlank() })
-                                .setMediaDrmId(mediaDrmId.takeIf { it.isNotBlank() })
-                                .setGsfId(gsfId.takeIf { it.isNotBlank() })
-                                .setBuildBrand(buildBrand.takeIf { it.isNotBlank() })
-                                .setBuildHardware(buildHardware.takeIf { it.isNotBlank() })
-                                .setBuildBoard(buildBoard.takeIf { it.isNotBlank() })
-                                .setBuildId(buildId.takeIf { it.isNotBlank() })
-                                .setBuildDisplay(buildDisplay.takeIf { it.isNotBlank() })
-                                .setBuildType(buildType.takeIf { it.isNotBlank() })
-                                .setBuildTags(buildTags.takeIf { it.isNotBlank() })
-                                .setBuildVersionRelease(buildVersionRelease.takeIf { it.isNotBlank() })
-                                .setBuildVersionIncremental(buildVersionIncremental.takeIf { it.isNotBlank() })
-                                .setBuildVersionCodename(buildVersionCodename.takeIf { it.isNotBlank() })
-                                .setBuildVersionSecurityPatch(buildVersionSecurityPatch.takeIf { it.isNotBlank() })
-                                .setSimSubscriberId(simSubscriberId.takeIf { it.isNotBlank() })
-                                .setSimCountry(simCountry.takeIf { it.isNotBlank() })
-                                .setSimMnc(simMnc.takeIf { it.isNotBlank() })
-                                .build()
+                    if (isFormValid) {
+                        val deviceInfo = DeviceInfo.newBuilder()
+                            .setImei1(imei1)
+                            .setImei2(imei2)
+                            .setAndroidId(androidId)
+                            .setBuildFingerprint(buildFingerprint)
+                            .setBuildDevice(buildDevice)
+                            .setWifiMac(wifiMac)
+                            .setWifiSsid(wifiSsid)
+                            .setWifiBssid(wifiBssid)
+                            .setBluetoothMac(bluetoothMac)
+                            .setBuildProduct(buildProduct)
+                            .setSimSerial(simSerial)
+                            .setMobileNumber(mobileNumber)
+                            .setSimOperator(simOperator)
+                            .setAdsId(adsId)
+                            .setMediaDrmId(mediaDrmId)
+                            .setGsfId(gsfId)
+                            .setBuildBrand(buildBrand)
+                            .setBuildHardware(buildHardware)
+                            .setBuildBoard(buildBoard)
+                            .setBuildId(buildId)
+                            .setBuildDisplay(buildDisplay)
+                            .setBuildType(buildType)
+                            .setBuildTags(buildTags)
+                            .setBuildVersionRelease(buildVersionRelease)
+                            .setBuildVersionIncremental(buildVersionIncremental)
+                            .setBuildVersionCodename(buildVersionCodename)
+                            .setBuildVersionSecurityPatch(buildVersionSecurityPatch)
+                            .setSimSubscriberId(simSubscriberId)
+                            .setSimCountry(simCountry)
+                            .setSimMnc(simMnc)
+                            .build()
 
-                            val profile = Profile.newBuilder()
-                                .setName(profileName)
-                                .setDeviceInfo(deviceInfo)
-                                .build()
+                        val profileBuilder = Profile.newBuilder()
+                            .setName(profileName)
+                            .setDeviceInfo(deviceInfo)
 
-                            try {
-                                if (profileId == null) {
-                                    profileManager.addProfile(profile)
-                                    Logger.log("ProfileEditorScreen: Added new profile: ${profile.name}")
-                                } else {
-                                    profileManager.updateProfile(profileId, profile)
-                                    Logger.log("ProfileEditorScreen: Updated profile: ${profile.name}")
-                                }
-                                onSave()
-                            } catch (e: Exception) {
-                                errorMessage = "Failed to save profile: ${e.message}"
-                                Logger.error("ProfileEditorScreen: Failed to save profile", e)
+                        try {
+                            if (profileId == null) {
+                                // Add new profile (ID will be generated by ProfileManager)
+                                profileManager.addProfile(profileBuilder.build())
+                                Logger.log("ProfileEditorScreen: Added new profile: $profileName")
+                            } else {
+                                // Update existing profile
+                                val updatedProfile = profileBuilder.setId(profileId).build()
+                                profileManager.updateProfile(updatedProfile)
+                                Logger.log("ProfileEditorScreen: Updated profile: $profileName")
                             }
+                            onSave()
+                        } catch (e: Exception) {
+                            errorMessage = "Failed to save profile: ${e.message}"
+                            Logger.error("ProfileEditorScreen: Failed to save profile", e)
                         }
+                    } else {
+                        errorMessage = "Please fix the errors before saving."
                     }
                 },
                 enabled = isFormValid,
@@ -494,8 +290,9 @@ fun ProfileEditorScreen(
             }
 
             if (profileId != null) {
-                OutlinedButton(
+                Button(
                     onClick = { showDeleteDialog = true },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
                     modifier = Modifier.weight(1f)
                 ) {
                     Text("Delete")
@@ -507,7 +304,7 @@ fun ProfileEditorScreen(
             AlertDialog(
                 onDismissRequest = { showDeleteDialog = false },
                 title = { Text("Delete Profile") },
-                text = { Text("Are you sure you want to delete this profile? This action cannot be undone.") },
+                text = { Text("Are you sure you want to delete this profile? This action cannot be undone and will unmap it from all apps.") },
                 confirmButton = {
                     TextButton(
                         onClick = {
@@ -515,7 +312,7 @@ fun ProfileEditorScreen(
                                 profileManager.deleteProfile(profileId!!)
                                 Logger.log("ProfileEditorScreen: Deleted profile: $profileId")
                                 showDeleteDialog = false
-                                onCancel()
+                                onDelete() // Navigate back after deletion
                             } catch (e: Exception) {
                                 errorMessage = "Failed to delete profile: ${e.message}"
                                 Logger.error("ProfileEditorScreen: Failed to delete profile", e)
@@ -523,7 +320,7 @@ fun ProfileEditorScreen(
                             }
                         }
                     ) {
-                        Text("Delete")
+                        Text("Delete", color = MaterialTheme.colorScheme.error)
                     }
                 },
                 dismissButton = {

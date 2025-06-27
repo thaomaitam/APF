@@ -6,23 +6,22 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.KTA.devicespoof.profile.ProfileManager
 import com.KTA.devicespoof.profile.Profile
 
 @Composable
 fun ProfileManagementScreen(
-    profileManager: ProfileManager,
-    onNavigateToProfileEditor: (String?) -> Unit
+    profiles: List<Profile>,
+    onNavigateToProfileEditor: (String?) -> Unit,
+    onDeleteProfile: (String) -> Unit
 ) {
-    val profiles by remember { mutableStateOf(profileManager.getAllProfiles()) }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
             text = "Profile Management",
@@ -30,35 +29,36 @@ fun ProfileManagementScreen(
         )
 
         Button(
-            onClick = { onNavigateToProfileEditor(null) },
+            onClick = { onNavigateToProfileEditor(null) }, // null ID means new profile
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Create New Profile")
         }
 
-        LazyColumn(
-            modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
-            items(profiles) { profile ->
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { onNavigateToProfileEditor(profile.id) }
-                ) {
-                    Row(
+        if (profiles.isEmpty()) {
+            Text("No profiles created yet. Create one to get started.")
+        } else {
+            LazyColumn(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(profiles, key = { it.id }) { profile ->
+                    Card(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(16.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
+                            .clickable { onNavigateToProfileEditor(profile.id) }
                     ) {
-                        Text(text = profile.name)
-                        OutlinedButton(
-                            onClick = {
-                                profileManager.deleteProfile(profile.id)
-                            }
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp, vertical = 8.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text("Delete")
+                            Text(text = profile.name, style = MaterialTheme.typography.titleMedium)
+                            TextButton(onClick = { onDeleteProfile(profile.id) }) {
+                                Text("Delete")
+                            }
                         }
                     }
                 }

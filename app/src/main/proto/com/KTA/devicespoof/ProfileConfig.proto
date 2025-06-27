@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package com.KTA.devicespoof;
+
+import "com/KTA/devicespoof/Profile.proto";
+
+option java_multiple_files = true;
+option java_package = "com.KTA.devicespoof.profile";
+option java_outer_classname = "ProfileConfigProto";
+
+// Mapping giữa package của app và profile ID
+message AppProfileMapping {
+  string app_package_name = 1;
+  string profile_id = 2;
+}
+
+// Cấu hình tổng thể, chứa tất cả profile và mapping
+message ProfileManagerConfig {
+  bool is_module_enabled = 1; // Cờ bật/tắt toàn cục
+  repeated Profile profiles = 2;
+  repeated AppProfileMapping app_mappings = 3;
+}
