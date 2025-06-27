@@ -2,7 +2,7 @@
 kotlin = "2.1.21"
 agp = "8.10.1"
 xposed = "82"
-annotation = "1.8.1"
+annotation = "1.9.1"
 hidden-api = "4.4.0"
 protobuf = "4.31.1"
 
