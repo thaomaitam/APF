@@ -1,5 +1,5 @@
 [versions]
-kotlin = "2.1.21"
+kotlin = "2.2.0"
 agp = "8.10.1"
 # - Phiên bản này không còn được dùng trong composeOptions
 # composeCompiler = "1.5.15" 
