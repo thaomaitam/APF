@@ -5,7 +5,7 @@
 # Keep Xposed hook classes and methods
 -keep class com.KTA.devicespoof.MainHook { *; }
 -keep class com.KTA.devicespoof.hook.** { *; }
--keep class com.KTA.devicespoof.config.** { *; }
+-keep class com.KTA.devicespoof.profile.** { *; }
 
 # Keep interface implementations
 -keep class * implements com.KTA.devicespoof.hook.interfaces.IHookModule { *; }

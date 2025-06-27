@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
 	alias(libs.plugins.refine)
+	alias(libs.plugins.protobuf)
 }
 
 val keystorePropertiesFile: File = rootProject.file("keystore.properties")
@@ -107,9 +108,31 @@ android {
     }
 }
 
+protobuf {
+    protoc {
+        artifact = libs.protobuf.protoc.get().toString()
+    }
+
+    generateProtoTasks {
+        all().forEach { task ->
+            task.builtins {
+                id("java") {
+                    option("lite")
+                }
+                id("kotlin") {
+                    option("lite")
+                }
+            }
+        }
+    }
+}
+
 dependencies {
     compileOnly(libs.xposed.api)
     compileOnly(libs.androidx.annotation)
 	implementation(libs.dev.rikka.hidden.compat)
     compileOnly(libs.dev.rikka.hidden.stub)
+	implementation(libs.protobuf.kotlin)
+    implementation(libs.protobuf.java)
+    compileOnly(libs.protobuf.protoc)
 }

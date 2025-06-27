@@ -1,41 +1,23 @@
 package com.KTA.devicespoof.utils
 
-import de.robv.android.xposed.XposedBridge
+import android.util.Log
 
 object Logger {
-    
-    private const val TAG = "[DeviceSpoof]"
-    private var debugEnabled = true
-    
+    private const val TAG = "DeviceSpoof"
+
     fun log(message: String) {
-        if (debugEnabled) {
-            XposedBridge.log("$TAG $message")
-        }
+        Log.d(TAG, message)
     }
-    
-    fun error(message: String, throwable: Throwable? = null) {
-        XposedBridge.log("$TAG ERROR: $message")
-        throwable?.let {
-            XposedBridge.log("$TAG ERROR: ${it.stackTraceToString()}")
-        }
-    }
-    
-    fun debug(message: String) {
-        if (debugEnabled) {
-            XposedBridge.log("$TAG DEBUG: $message")
-        }
-    }
-    
-    fun info(message: String) {
-        XposedBridge.log("$TAG INFO: $message")
-    }
-    
+
     fun warn(message: String) {
-        XposedBridge.log("$TAG WARN: $message")
+        Log.w(TAG, message)
     }
-    
-    fun setDebugEnabled(enabled: Boolean) {
-        debugEnabled = enabled
-        log("Debug logging ${if (enabled) "enabled" else "disabled"}")
+
+    fun error(message: String, throwable: Throwable? = null) {
+        if (throwable != null) {
+            Log.e(TAG, message, throwable)
+        } else {
+            Log.e(TAG, message)
+        }
     }
 }

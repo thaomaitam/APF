@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="xposedscope">
-    <item>com.alphabetlabs.deviceinfo</item>
-	<item>flar2.devcheck</item>
+    <item></item>
     </string-array>
 </resources>
