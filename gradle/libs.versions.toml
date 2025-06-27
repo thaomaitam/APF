@@ -5,6 +5,10 @@ xposed = "82"
 annotation = "1.8.1"
 hidden-api = "4.4.0"
 protobuf = "4.31.1"
+coreKtx = "1.13.1"
+activityCompose = "1.9.1"
+composeBom = "2024.06.00"
+navigationCompose = "2.7.7"
 
 [libraries]
 xposed-api = { module = "de.robv.android.xposed:api", version.ref = "xposed" }
@@ -14,6 +18,14 @@ dev-rikka-hidden-stub = { module = "dev.rikka.hidden:stub", version.ref = "hidde
 protobuf-kotlin = { module = "com.google.protobuf:protobuf-kotlin-lite", version.ref = "protobuf" }
 protobuf-java = { module = "com.google.protobuf:protobuf-javalite", version.ref = "protobuf" }
 protobuf-protoc = { module = "com.google.protobuf:protoc", version.ref = "protobuf" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
