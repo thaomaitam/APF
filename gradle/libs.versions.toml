@@ -1,7 +1,10 @@
 [versions]
 kotlin = "2.1.21"
 agp = "8.10.1"
-composeCompiler = "1.5.15"
+# - Phiên bản này không còn được dùng trong composeOptions
+# composeCompiler = "1.5.15" 
+# + Thêm phiên bản cho thư viện compiler
+androidxComposeCompiler = "1.5.15"
 xposed = "82"
 annotation = "1.8.1"
 hidden-api = "4.4.0"
@@ -28,11 +31,15 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
+# + Thêm thư viện compiler của Compose
+androidx-compose-compiler = { group = "androidx.compose.compiler", name = "compiler", version.ref = "androidxComposeCompiler" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
-
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+# + Thêm plugin Compose compiler mới, liên kết với phiên bản Kotlin
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 refine = { id = "dev.rikka.tools.refine", version = "4.4.0" }
 protobuf = { id = "com.google.protobuf", version = "0.9.5" }
