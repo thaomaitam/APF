@@ -1,6 +1,7 @@
 [versions]
-kotlin = "2.1.21"
+kotlin = "1.9.22" # ALTERADO de "2.1.21"
 agp = "8.10.1"
+composeCompiler = "1.5.8" # ADICIONADO
 xposed = "82"
 annotation = "1.8.1"
 hidden-api = "4.4.0"
@@ -26,7 +27,7 @@ androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
-androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime" } # <--- DÒNG ĐƯỢC THÊM VÀO
+androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

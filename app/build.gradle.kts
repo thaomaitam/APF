@@ -61,6 +61,11 @@ android {
     }
     buildFeatures {
         buildConfig = true
+        compose = true // Habilita o Compose no projeto
+    }
+    composeOptions {
+        // Define a versão do compilador do Compose
+        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
     buildTypes {
         release {
@@ -144,5 +149,5 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.navigation.compose)
-    implementation(libs.androidx.compose.runtime) // <--- DÒNG ĐƯỢC THÊM VÀO
+    implementation(libs.androidx.compose.runtime)
 }
