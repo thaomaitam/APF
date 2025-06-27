@@ -1,15 +1,15 @@
 [versions]
-kotlin = "1.9.22" # ALTERADO de "2.1.21"
+kotlin = "2.1.21"
 agp = "8.10.1"
-composeCompiler = "1.5.8" # ADICIONADO
+composeCompiler = "1.5.15"
 xposed = "82"
 annotation = "1.8.1"
 hidden-api = "4.4.0"
 protobuf = "4.31.1"
-coreKtx = "1.13.1"
-activityCompose = "1.9.1"
-composeBom = "2024.06.00"
-navigationCompose = "2.7.7"
+coreKtx = "1.16.0"
+activityCompose = "1.10.1"
+composeBom = "2025.06.01"
+navigationCompose = "2.9.0"
 
 [libraries]
 xposed-api = { module = "de.robv.android.xposed:api", version.ref = "xposed" }
