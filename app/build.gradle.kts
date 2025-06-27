@@ -1,4 +1,5 @@
 import com.android.build.gradle.tasks.PackageAndroidArtifact
+import com.google.protobuf.gradle.id
 import java.io.FileInputStream
 import java.nio.charset.StandardCharsets
 import java.util.Properties
