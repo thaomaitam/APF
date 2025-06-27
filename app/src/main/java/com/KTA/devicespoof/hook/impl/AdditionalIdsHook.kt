@@ -139,7 +139,7 @@ class AdditionalIdsHook : IHookModule {
                         }
                     )
                 } catch (e: Exception) {
-                    Logger.warn("AdditionalIdsHook: Failed to hook InstanceID.getId", e)
+                    Logger.error("AdditionalIdsHook: Failed to hook InstanceID.getId", e)
                 }
             }
 

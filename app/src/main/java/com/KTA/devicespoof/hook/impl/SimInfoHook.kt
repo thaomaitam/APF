@@ -53,7 +53,7 @@ class SimInfoHook : IHookModule {
                     lpparam.classLoader,
                     "getLine1Number",
                     object : XC_MethodHook() {
-|                        override fun beforeHookedMethod(param: MethodHookParam) {
+                        override fun beforeHookedMethod(param: MethodHookParam) {
                             if (isActive) {
                                 param.result = deviceInfo?.mobileNumber
                                 Logger.log("SimInfoHook: Spoofed mobile number to ${deviceInfo?.mobileNumber} for ${lpparam.packageName}")

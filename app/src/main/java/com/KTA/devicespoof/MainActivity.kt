@@ -139,7 +139,10 @@ fun AppNavigation(profileManager: ProfileManager) {
 private fun getInstalledApps(context: Context): List<String> {
     return try {
         context.packageManager.getInstalledPackages(0)
-            .filter { it.applicationInfo != null && !it.applicationInfo.packageName.startsWith("com.android.") }
+            .filter {
+                val appInfo = it.applicationInfo
+                appInfo != null && !appInfo.packageName.startsWith("com.android.")
+            }
             .map { it.packageName }
             .sorted()
     } catch (e: Exception) {
