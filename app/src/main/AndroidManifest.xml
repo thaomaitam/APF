@@ -35,7 +35,7 @@
 
         <!-- Main Activity for UI -->
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name">
             <intent-filter>
