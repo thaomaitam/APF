@@ -38,7 +38,7 @@
     <string name="home_xposed_service_off">Dịch vụ trung tâm không hoạt động</string>
     <string name="home_xposed_service_old">Module đã được cập nhật, cần khởi động lại</string>
     <string name="home_manage">Chức năng</string>
-    <string name="home_backup_and_restore">Sao lưu & Khôi phục</string>
+    <string name="home_backup_and_restore">Sao lưu và Khôi phục</string>
     <string name="home_backup_config">Sao lưu Cấu hình</string>
     <string name="home_restore_config">Khôi phục Cấu hình</string>
     <string name="home_import_successful">Nhập cấu hình thành công</string>
