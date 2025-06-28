@@ -2,9 +2,9 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
     repositories {
+        gradlePluginPortal()
         google()
         mavenCentral()
-        gradlePluginPortal()
     }
 }
 
@@ -13,12 +13,15 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        // Cho thư viện của Rikka và các thư viện khác trên Jitpack
         maven("https://jitpack.io")
-        // Cho API của Xposed
         maven("https://api.xposed.info/")
     }
 }
 
-rootProject.name = "APF"
-include(":app", ":xposed")
+rootProject.name = "HideMyApplist"
+
+include(
+    ":app",
+    ":common",
+    ":xposed"
+)

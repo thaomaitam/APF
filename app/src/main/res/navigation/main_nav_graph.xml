@@ -3,37 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav_graph"
-    app:startDestination="@id/ruleListFragment">
-
+    app:startDestination="@id/home_nav_graph">
+    <include app:graph="@navigation/home_nav_graph" />
     <fragment
-        android:id="@+id/ruleListFragment"
-        android:name="com.KTA.APF.ui.fragment.RuleListFragment"
-        android:label="APF Rules"
-        tools:layout="@layout/fragment_rule_list" >
-        <action
-            android:id="@+id/action_ruleListFragment_to_ruleEditorFragment"
-            app:destination="@id/ruleEditorFragment" />
-    </fragment>
-
+        android:id="@+id/nav_logs"
+        android:name="icu.nullptr.hidemyapplist.ui.fragment.LogsFragment"
+        android:label="@string/title_logs"
+        tools:layout="@layout/fragment_settings" />
     <fragment
-        android:id="@+id/ruleEditorFragment"
-        android:name="com.KTA.APF.ui.fragment.RuleEditorFragment"
-        android:label="Rule Editor"
-        tools:layout="@layout/fragment_rule_editor" >
-        <argument
-            android:name="targetPackage"
-            app:argType="string"
-            app:nullable="true"
-            android:defaultValue="@null" />
-        <action
-            android:id="@+id/action_ruleEditorFragment_to_targetAppSelectFragment"
-            app:destination="@id/targetAppSelectFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/targetAppSelectFragment"
-        android:name="com.KTA.APF.ui.fragment.TargetAppSelectFragment"
-        android:label="Select Application"
-        tools:layout="@layout/fragment_target_app_select" />
-
+        android:id="@+id/nav_settings"
+        android:name="icu.nullptr.hidemyapplist.ui.fragment.SettingsFragment"
+        android:label="@string/title_settings" />
 </navigation>

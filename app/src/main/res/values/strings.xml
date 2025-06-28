@@ -1,36 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">APF</string>
+    <!-- Tên ứng dụng mới -->
+    <string name="app_name">Android Profile Faker</string>
 
-    <!-- Rule List Screen -->
-    <string name="rule_list_title">APF Rules</string>
-    <string name="empty_rule_list_message">No rules yet.\nTap the + button to add a new rule.</string>
-    <string name="add_new_rule_fab_description">Add new rule</string>
+    <!-- Tiêu đề các màn hình -->
+    <string name="title_home">Trang chủ</string>
+    <string name="title_logs">Nhật ký</string>
+    <string name="title_settings">Cài đặt</string>
+    <string name="title_app_manage">Quản lý Ứng dụng</string>
+    <string name="title_app_select">Chọn Ứng dụng</string>
+    <string name="title_app_settings">Cài đặt Faker cho Ứng dụng</string>
+    <!-- Tiêu đề mới cho quản lý Profile -->
+    <string name="title_profile_manage">Quản lý Hồ sơ Faker</string>
+    <string name="title_profile_editor">Chỉnh sửa Hồ sơ</string>
 
-    <!-- Rule Editor Screen -->
-    <string name="new_rule_title">New Rule</string>
-    <string name="edit_rule_title">Edit Rule</string>
-    <string name="save">Save</string>
-    <string name="delete">Delete</string>
-    <string name="rule_saved_toast">Rule saved</string>
-    <string name="rule_deleted_toast">Rule deleted</string>
-    <string name="delete_rule_dialog_title">Delete Rule</string>
-    <string name="delete_rule_dialog_message">Are you sure you want to delete this rule?</string>
-    <string name="delete_dialog_positive_button">Delete</string>
-    <string name="cancel">Cancel</string>
+    <!-- Các chuỗi chung -->
+    <string name="show_crash_log">Xem nhật ký lỗi</string>
+    <string name="config_damaged">Tệp cấu hình bị lỗi. Vui lòng xóa dữ liệu ứng dụng.</string>
+    <string name="edit_list">Chỉnh sửa</string>
+    <string name="delete">Xóa</string>
+    <string name="enabled">Đã bật</string>
+    <string name="disabled">Đã tắt</string>
+    <string name="application">Ứng dụng</string>
+    <string name="preferences">Tùy chọn</string>
+    <string name="refresh">Làm mới</string>
+    <string name="filter">Lọc</string>
+    <string name="yes">Có</string>
+    <string name="no">Không</string>
+    <string name="search">Tìm kiếm</string>
+    <string name="save">Lưu</string>
+    <string name="cancel">Hủy</string>
 
-    <!-- Preferences in Rule Editor -->
-    <string name="pref_category_target_app">Target Application</string>
-    <string name="pref_title_target_app">Application</string>
-    <string name="pref_summary_select_app">Click to select an application</string>
-    <string name="pref_toast_cant_change_app">Target application cannot be changed for an existing rule.</string>
+    <!-- Trang chủ (HomeFragment) -->
+    <string name="home_xposed_activated">Module đã kích hoạt [%s-%d]</string>
+    <string name="home_xposed_not_activated">Module chưa được kích hoạt</string>
+    <string name="home_xposed_service_on">Dịch vụ trung tâm đang chạy [%d]</string>
+    <string name="home_xposed_service_off">Dịch vụ trung tâm không hoạt động</string>
+    <string name="home_xposed_service_old">Module đã được cập nhật, cần khởi động lại</string>
+    <string name="home_manage">Chức năng</string>
+    <string name="home_backup_and_restore">Sao lưu & Khôi phục</string>
+    <string name="home_backup_config">Sao lưu Cấu hình</string>
+    <string name="home_restore_config">Khôi phục Cấu hình</string>
+    <string name="home_import_successful">Nhập cấu hình thành công</string>
+    <string name="home_import_failed">Nhập cấu hình thất bại</string>
+    <string name="home_import_file_damaged">Tệp sao lưu bị hỏng</string>
+    <string name="home_export_failed">Xuất cấu hình thất bại</string>
+    <string name="home_exported">Đã sao lưu cấu hình</string>
+
+    <!-- Chọn Ứng dụng (AppSelect) -->
+    <string name="list_show_system">Hiện ứng dụng hệ thống</string>
+    <string name="list_sorting">Sắp xếp</string>
+    <string name="list_reverse_order">Đảo ngược thứ tự</string>
+    <string name="list_sort_by_label">Theo tên ứng dụng</string>
+    <string name="list_sort_by_package_name">Theo tên gói</string>
+    <string name="list_sort_by_install_time">Theo thời gian cài đặt</string>
+    <string name="list_sort_by_update_time">Theo thời gian cập nhật</string>
+
+    <!-- Quản lý Hồ sơ (ProfileManageFragment) -->
+    <string name="profile_usage_hint">Tạo các hồ sơ thiết bị ảo. Sau đó, vào "Quản lý Ứng dụng" để áp dụng một hồ sơ cho từng ứng dụng mục tiêu.</string>
+    <string name="profile_new">Tạo Hồ sơ mới</string>
+    <string name="profile_delete_title">Xóa Hồ sơ</string>
+    <string name="profile_delete_confirm">Bạn có chắc chắn muốn xóa hồ sơ "%1$s" không? Hành động này không thể hoàn tác.</string>
     
-    <string name="pref_category_spoofing_profile">Spoofing Profile</string>
-    <string name="pref_title_device_profile">Device Profile</string>
+    <!-- Chỉnh sửa Hồ sơ (ProfileEditorFragment) -->
+    <string name="profile_editor_name_label">Tên Hồ sơ</string>
+    <string name="profile_editor_name_hint">Ví dụ: Pixel 8 Pro, Samsung Test</string>
+    <string name="profile_editor_name_exist">Tên hồ sơ này đã tồn tại.</string>
+    <string name="profile_editor_name_empty">Tên hồ sơ không được để trống.</string>
+    <string name="profile_editor_group_device">Thông tin Thiết bị</string>
+    <string name="profile_editor_group_network">Thông tin Mạng</string>
+    <string name="profile_editor_group_sim">Thông tin SIM</string>
+    <string name="profile_editor_group_build">Thông tin Build Hệ thống</string>
+    <string name="profile_editor_randomize_all">Tạo ngẫu nhiên tất cả</string>
+    <string name="profile_editor_save_success">Đã lưu hồ sơ.</string>
+    
+    <!-- Các trường trong ProfileEditorFragment -->
+    <string name="field_imei1">IMEI 1</string>
+    <string name="field_imei2">IMEI 2</string>
+    <string name="field_android_id">Android ID</string>
+    <string name="field_wifi_mac">Wifi MAC</string>
+    <string name="field_wifi_ssid">Wifi SSID</string>
+    <string name="field_wifi_bssid">Wifi BSSID</string>
+    <string name="field_bluetooth_mac">Bluetooth MAC</string>
+    <string name="field_sim_subscriber_id">Sim Subscriber ID (IMSI)</string>
+    <string name="field_sim_serial">Sim Serial (ICCID)</string>
+    <string name="field_mobile_number">Số điện thoại</string>
+    <string name="field_hardware_serial">Hardware Serial</string>
+    <string name="field_ads_id">Ads ID (GAID)</string>
+    <string name="field_sim_country">Sim Country (ISO)</string>
+    <string name="field_sim_operator">Sim Operator (MCC+MNC)</string>
+    <string name="field_sim_mnc">Sim MNC</string>
+    <string name="field_country_iso">Country ISO</string>
+    <string name="field_build_board">Build Board</string>
+    <string name="field_build_id">Build ID</string>
+    <string name="field_build_display">Build Display</string>
+    <string name="field_build_product">Build Product</string>
+    <string name="field_build_device">Build Device</string>
+    <string name="field_build_fingerprint">Build Fingerprint</string>
 
-    <!-- App Select Screen -->
-    <string name="app_select_title">Select Application</string>
-    <string name="search_hint">Search apps…</string>
-    <string name="action_search">Search</string>
-    <string name="action_show_system_apps">Show system apps</string>
+    <!-- Cài đặt Faker cho Ứng dụng (AppSettingsFragment) -->
+    <string name="app_enable_faker">Kích hoạt Faker</string>
+    <string name="app_faker_config">APF - Android Profile Faker</string>
+    <string name="app_choose_profile">Chọn Hồ sơ Faker</string>
+    <string name="app_no_profile_chosen">Chưa chọn hồ sơ</string>
+    <string name="app_current_profile">Hồ sơ hiện tại: %1$s</string>
 
+    <!-- Nhật ký (LogsFragment) -->
+    <string name="logs_save">Lưu Nhật ký</string>
+    <string name="logs_clear">Xóa Nhật ký</string>
+    <string name="logs_empty">Không có nhật ký để lưu</string>
+    <string name="logs_saved">Nhật ký đã được lưu</string>
+
+    <!-- Cài đặt (SettingsFragment) -->
+    <string name="settings_module">Module</string>
+    <string name="settings_detail_log">Bật log chi tiết để gỡ lỗi</string>
+    <string name="settings_max_log_size">Kích thước bộ đệm nhật ký</string>
+    <string name="settings_hide_icon">Ẩn biểu tượng trong trình khởi chạy</string>
+    <string name="settings_hide_icon_summary">Bạn vẫn có thể mở ứng dụng qua Xposed Manager</string>
+    <string name="settings_language">Ngôn ngữ</string>
+    <string name="settings_translate">Tham gia dịch thuật</string>
+    <string name="settings_translate_summary">Giúp chúng tôi dịch %s sang ngôn ngữ của bạn</string>
+    <string name="settings_theme">Giao diện</string>
+    <string name="settings_system_theme_color">Sử dụng màu của hệ thống</string>
+    <string name="settings_theme_color">Màu chủ đạo</string>
+    <string name="settings_dark_theme">Chế độ tối</string>
+    <string name="settings_pure_black_dark_theme">Nền đen tuyền (OLED)</string>
+    <string name="settings_pure_black_dark_theme_summary">Sử dụng nền đen hoàn toàn khi ở chế độ tối</string>
+    <string name="settings_service">Dịch vụ</string>
+    <string name="settings_stop_system_service">Dừng Dịch vụ Trung tâm</string>
+    <string name="settings_stop_system_service_summary">Cần khởi động lại máy để bật lại dịch vụ</string>
+    <string name="settings_is_clean_env">Đồng thời xóa môi trường runtime?</string>
+    <string name="settings_is_clean_env_summary">Xóa bộ nhớ đệm của dịch vụ trong /data/misc. Điều này yêu cầu bạn phải mở ứng dụng một lần sau khi khởi động lại để kích hoạt lại các hook.</string>
+    <string name="settings_force_clean_env">Buộc xóa môi trường runtime (root)</string>
+    <string name="settings_force_clean_env_summary">Chỉ sử dụng khi dịch vụ không thể khởi động. Nếu không, hãy dùng tùy chọn ở trên.</string>
+    <string name="settings_force_clean_env_toast_successful">Đã xóa môi trường runtime.</string>
+
+    <!-- Các chuỗi màu sắc (giữ nguyên từ HMA gốc) -->
+    <string name="color_sakura">Anh đào</string>
+    <string name="color_red">Đỏ</string>
+    <string name="color_pink">Hồng</string>
+    <string name="color_purple">Tím</string>
+    <string name="color_deep_purple">Tím đậm</string>
+    <string name="color_indigo">Chàm</string>
+    <string name="color_blue">Xanh dương</string>
+    <string name="color_light_blue">Xanh nhạt</string>
+    <string name="color_cyan">Lục lam</string>
+    <string name="color_teal">Mòng két</string>
+    <string name="color_green">Xanh lá</string>
+    <string name="color_light_green">Xanh lá nhạt</string>
+    <string name="color_lime">Vàng chanh</string>
+    <string name="color_yellow">Vàng</string>
+    <string name="color_amber">Hổ phách</string>
+    <string name="color_orange">Cam</string>
+    <string name="color_deep_orange">Cam đậm</string>
+    <string name="color_brown">Nâu</string>
+    <string name="color_blue_grey">Xanh xám</string>
 </resources>

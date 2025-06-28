@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Nhóm: Thông tin ứng dụng -->
+    <PreferenceCategory android:title="@string/application">
+        <!-- Vẫn giữ lại Preference này để hiển thị icon và tên package -->
+        <Preference android:key="appInfo" />
+
+        <!-- Công tắc chính để bật/tắt faker cho ứng dụng này -->
+        <SwitchPreference
+            android:key="enableFaker"
+            android:title="@string/app_enable_faker"
+            android:icon="@drawable/outline_shield_24"
+            app:singleLineTitle="true" />
+    </PreferenceCategory>
+
+    <!-- Nhóm: Cấu hình Faker -->
+    <!-- Nhóm này sẽ chỉ hiển thị khi công tắc ở trên được bật -->
+    <PreferenceCategory
+        android:key="faker_config_category"
+        android:dependency="enableFaker"
+        android:title="@string/app_faker_config">
+
+        <!-- 
+            Preference để chọn Profile.
+            Chúng ta sẽ dùng một Preference bình thường và xử lý sự kiện click trong code Kotlin
+            để hiển thị một dialog lựa chọn. Điều này linh hoạt hơn ListPreference.
+        -->
+        <Preference
+            android:key="chooseProfile"
+            android:title="@string/app_choose_profile"
+            android:summary="@string/app_no_profile_chosen"
+            android:icon="@drawable/outline_android_24" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

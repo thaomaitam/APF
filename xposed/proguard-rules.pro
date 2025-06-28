@@ -1,33 +1,24 @@
-# Giữ lại lớp entry point của Xposed và các lớp hook
--keep class com.KTA.APF.xposed.XposedHook { *; }
--keep class com.KTA.APF.xposed.hook.** { *; }
-
-# Giữ lại các phương thức được đánh dấu bởi annotation của Xposed
--keepclassmembers class * {
-    @de.robv.android.xposed.** *;
-}
-
-# Không cảnh báo về các lớp của Xposed Framework
--dontwarn de.robv.android.xposed.**
-
-# --- Các quy tắc cho Kotlinx Serialization ---
-# Giữ lại các lớp data được đánh dấu là @Serializable
-# Điều này rất quan trọng để đọc file cấu hình từ SharedPreferences
--keep @kotlinx.serialization.Serializable class * { *; }
--keepclassmembers class **$$serializer { *; }
--keep class * implements kotlinx.serialization.KSerializer { *; }
--keepclassmembers enum * {
-    public static **[] values();
-    public static ** valueOf(java.lang.String);
-}
--keepnames class kotlinx.serialization.internal.*
-
-# --- Các quy tắc cho API ẩn của Rikka ---
--keep class dev.rikka.tools.refine.** { *; }
--keep class dev.rikka.hidden.** { *; }
-
-# --- Các quy tắc cho các lớp hệ thống bị hook ---
--keep class android.os.Build { *; }
--keep class android.os.Build$VERSION { *; }
--keep class android.os.SystemProperties { *; }
--keep class android.provider.Settings$Secure { *; }
+-keep class com.github.kyuubiran.ezxhelper.utils.** { *; }
+-keep class icu.nullptr.hidemyapplist.xposed.XposedEntry { *; }
+-dontwarn java.lang.invoke.StringConcatFactory
+-dontwarn android.content.res.XModuleResources
+-dontwarn android.content.res.XResources
+-dontwarn de.robv.android.xposed.IXposedHookLoadPackage
+-dontwarn de.robv.android.xposed.IXposedHookZygoteInit$StartupParam
+-dontwarn de.robv.android.xposed.IXposedHookZygoteInit
+-dontwarn de.robv.android.xposed.XC_MethodHook$MethodHookParam
+-dontwarn de.robv.android.xposed.XC_MethodHook$Unhook
+-dontwarn de.robv.android.xposed.XC_MethodHook
+-dontwarn de.robv.android.xposed.XC_MethodReplacement
+-dontwarn de.robv.android.xposed.XposedBridge
+-dontwarn de.robv.android.xposed.XposedHelpers
+-dontwarn de.robv.android.xposed.callbacks.XC_LoadPackage$LoadPackageParam
+-dontwarn org.bouncycastle.jsse.BCSSLParameters
+-dontwarn org.bouncycastle.jsse.BCSSLSocket
+-dontwarn org.bouncycastle.jsse.provider.BouncyCastleJsseProvider
+-dontwarn org.conscrypt.Conscrypt$Version
+-dontwarn org.conscrypt.Conscrypt
+-dontwarn org.conscrypt.ConscryptHostnameVerifier
+-dontwarn org.openjsse.javax.net.ssl.SSLParameters
+-dontwarn org.openjsse.javax.net.ssl.SSLSocket
+-dontwarn org.openjsse.net.ssl.OpenJSSE

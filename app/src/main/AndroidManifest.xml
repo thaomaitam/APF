@@ -2,75 +2,61 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!--
-        Cần quyền này để lấy danh sách đầy đủ các ứng dụng trên thiết bị,
-        giúp người dùng có thể chọn ứng dụng mục tiêu để áp dụng hook.
-    -->
     <uses-permission
         android:name="android.permission.QUERY_ALL_PACKAGES"
         tools:ignore="QueryAllPackagesPermission" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
-        android:name=".MyApp"
+        android:name="icu.nullptr.hidemyapplist.MyApp"
         android:allowBackup="true"
+        android:fullBackupOnly="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.APF"
-        tools:ignore="GoogleAppIndexingWarning">
+        android:theme="@style/AppTheme">
 
         <activity
-            android:name=".ui.activity.MainActivity"
-            android:exported="true">
-            <!--
-                Intent filter này làm cho ứng dụng xuất hiện trong launcher của điện thoại,
-                giúp người dùng có thể mở giao diện cài đặt một cách bình thường.
-            -->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <!--
-                Intent filter này đăng ký Activity với Xposed Framework (ví dụ: LSPosed),
-                cho phép người dùng mở giao diện cài đặt của module trực tiếp từ trong
-                giao diện của Xposed Manager.
-            -->
+            android:name="icu.nullptr.hidemyapplist.ui.activity.MainActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="de.robv.android.xposed.category.MODULE_SETTINGS" />
             </intent-filter>
         </activity>
 
-        <!-- Metadata cho Xposed Framework -->
+        <activity-alias
+            android:name=".MainActivityLauncher"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:targetActivity="icu.nullptr.hidemyapplist.ui.activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
 
-        <!-- Báo cho Xposed biết đây là một module. Bắt buộc. -->
+        <provider
+            android:name="icu.nullptr.hidemyapplist.service.ServiceProvider"
+            android:authorities="com.tsng.hidemyapplist.ServiceProvider"
+            android:exported="true"
+            tools:ignore="ExportedContentProvider" />
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-7935522387526005~2750782344" />
         <meta-data
             android:name="xposedmodule"
             android:value="true" />
-
-        <!-- Mô tả ngắn gọn về chức năng của module, sẽ hiển thị trong Xposed Manager. -->
         <meta-data
             android:name="xposeddescription"
-            android:value="A Faker App to spoof device info for specific apps." />
-
-        <!-- Phiên bản Xposed API tối thiểu mà module yêu cầu. 82 là một giá trị phổ biến. -->
+            android:value="Reject applist detection." />
         <meta-data
             android:name="xposedminversion"
             android:value="82" />
-            
-        <!--
-            CỰC KỲ QUAN TRỌNG:
-            Cờ này báo cho Xposed Framework biết rằng SharedPreferences của ứng dụng này
-            cần được làm cho "world-readable" (có thể đọc được bởi các tiến trình khác).
-            Điều này cho phép module hook (chạy trong tiến trình của ứng dụng mục tiêu)
-            đọc được file cấu hình do ứng dụng UI (chạy trong tiến trình của chính nó) tạo ra.
-            Đây là chìa khóa cho kiến trúc giao tiếp đơn giản của chúng ta.
-        -->
         <meta-data
-            android:name="xposedsharedprefs"
-            android:value="true" />
-
+            android:name="xposedscope"
+            android:resource="@array/xposed_scope" />
     </application>
-
 </manifest>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_nav_graph"
+    app:startDestination="@id/nav_home">
+
+    <!-- =================================================================== -->
+    <!-- Màn hình chính (Home)                                                -->
+    <!-- =================================================================== -->
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="icu.nullptr.hidemyapplist.ui.fragment.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home">
+
+        <!-- Action: Điều hướng từ Home đến màn hình quản lý Profile -->
+        <action
+            android:id="@+id/action_nav_home_to_nav_profile_manage"
+            app:destination="@id/nav_profile_manage"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            
+        <!-- Action: Điều hướng từ Home đến màn hình quản lý ứng dụng (giữ lại từ HMA gốc) -->
+        <action
+            android:id="@+id/action_nav_home_to_nav_app_manage"
+            app:destination="@id/nav_app_manage" />
+
+    </fragment>
+
+    <!-- =================================================================== -->
+    <!-- Màn hình Quản lý Hồ sơ Faker (thay thế TemplateManageFragment)        -->
+    <!-- =================================================================== -->
+    <fragment
+        android:id="@+id/nav_profile_manage"
+        android:name="icu.nullptr.hidemyapplist.ui.fragment.ProfileManageFragment"
+        android:label="@string/title_profile_manage"
+        tools:layout="@layout/fragment_profile_manage">
+
+        <!-- Action: Điều hướng từ màn hình quản lý đến màn hình chỉnh sửa/tạo mới Profile -->
+        <action
+            android:id="@+id/action_nav_profile_manage_to_nav_profile_editor"
+            app:destination="@id/nav_profile_editor"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+
+    <!-- =================================================================== -->
+    <!-- Màn hình Chỉnh sửa Hồ sơ Faker (thay thế TemplateSettingsFragment)   -->
+    <!-- =================================================================== -->
+    <fragment
+        android:id="@+id/nav_profile_editor"
+        android:name="icu.nullptr.hidemyapplist.ui.fragment.ProfileEditorFragment"
+        android:label="@string/title_profile_editor"
+        tools:layout="@layout/fragment_profile_editor">
+
+        <!-- 
+            Argument để truyền tên của profile cần chỉnh sửa.
+            Nếu không truyền, nghĩa là đang tạo profile mới.
+        -->
+        <argument
+            android:name="profileName"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+    
+    <!-- =================================================================== -->
+    <!-- Các Fragment khác từ HMA gốc (sẽ được sửa đổi hoặc xóa sau)       -->
+    <!-- =================================================================== -->
+    
+    <!-- Màn hình quản lý ứng dụng (sẽ được sửa để áp dụng Profile) -->
+    <fragment
+        android:id="@+id/nav_app_manage"
+        android:name="icu.nullptr.hidemyapplist.ui.fragment.AppManageFragment"
+        android:label="@string/title_app_manage">
+        <action
+            android:id="@+id/action_nav_app_manage_to_nav_app_settings"
+            app:destination="@id/nav_app_settings" />
+    </fragment>
+    
+    <!-- Màn hình cài đặt cho từng ứng dụng (sẽ được sửa để chọn Profile) -->
+    <fragment
+        android:id="@+id/nav_app_settings"
+        android:name="icu.nullptr.hidemyapplist.ui.fragment.AppSettingsFragment"
+        android:label="@string/title_app_settings">
+        <argument
+            android:name="packageName"
+            app:argType="string" />
+    </fragment>
+    
+    <!-- 
+        Màn hình chọn ứng dụng (ScopeFragment).
+        Màn hình này có thể được tái sử dụng khi người dùng cần chọn ứng dụng để 
+        áp dụng một profile hàng loạt. Hiện tại chúng ta giữ lại nó.
+    -->
+    <fragment
+        android:id="@+id/nav_scope"
+        android:name="icu.nullptr.hidemyapplist.ui.fragment.ScopeFragment"
+        android:label="@string/title_app_select">
+        <argument
+            android:name="filterOnlyEnabled"
+            app:argType="boolean" />
+        <argument
+            android:name="isWhiteList"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <argument
+            android:name="checked"
+            app:argType="string[]" />
+    </fragment>
+
+</navigation>
