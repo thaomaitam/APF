@@ -32,7 +32,7 @@
     <string name="cancel">Hủy</string>
 
     <!-- Trang chủ (HomeFragment) -->
-    <string name="home_xposed_activated">Module đã kích hoạt [%s-%d]</string>
+    <string name="home_xposed_activated">Module đã kích hoạt [%1$s-%2$d]</string>
     <string name="home_xposed_not_activated">Module chưa được kích hoạt</string>
     <string name="home_xposed_service_on">Dịch vụ trung tâm đang chạy [%d]</string>
     <string name="home_xposed_service_off">Dịch vụ trung tâm không hoạt động</string>
