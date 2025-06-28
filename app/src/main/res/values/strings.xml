@@ -1,4 +1,36 @@
 <resources>
-    <string name="app_name">KTAF</string>
-    <string name="xposed_desc">Module hỗ trợ fake devices</string>
+    <string name="app_name">APF</string>
+
+    <!-- Rule List Screen -->
+    <string name="rule_list_title">APF Rules</string>
+    <string name="empty_rule_list_message">No rules yet.\nTap the + button to add a new rule.</string>
+    <string name="add_new_rule_fab_description">Add new rule</string>
+
+    <!-- Rule Editor Screen -->
+    <string name="new_rule_title">New Rule</string>
+    <string name="edit_rule_title">Edit Rule</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="rule_saved_toast">Rule saved</string>
+    <string name="rule_deleted_toast">Rule deleted</string>
+    <string name="delete_rule_dialog_title">Delete Rule</string>
+    <string name="delete_rule_dialog_message">Are you sure you want to delete this rule?</string>
+    <string name="delete_dialog_positive_button">Delete</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- Preferences in Rule Editor -->
+    <string name="pref_category_target_app">Target Application</string>
+    <string name="pref_title_target_app">Application</string>
+    <string name="pref_summary_select_app">Click to select an application</string>
+    <string name="pref_toast_cant_change_app">Target application cannot be changed for an existing rule.</string>
+    
+    <string name="pref_category_spoofing_profile">Spoofing Profile</string>
+    <string name="pref_title_device_profile">Device Profile</string>
+
+    <!-- App Select Screen -->
+    <string name="app_select_title">Select Application</string>
+    <string name="search_hint">Search apps…</string>
+    <string name="action_search">Search</string>
+    <string name="action_show_system_apps">Show system apps</string>
+
 </resources>

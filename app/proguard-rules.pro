@@ -1,44 +1,26 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
+# Giữ lại các lớp data được đánh dấu là @Serializable
+# Quan trọng để lưu và đọc cấu hình JSON.
+-keep @kotlinx.serialization.Serializable class * { *; }
+-keepclassmembers class **$$serializer { *; }
+-keep class * implements kotlinx.serialization.KSerializer { *; }
 
-# Keep Xposed hook classes and methods
--keep class com.KTA.devicespoof.MainHook { *; }
--keep class com.KTA.devicespoof.hook.** { *; }
--keep class com.KTA.devicespoof.config.** { *; }
-
-# Keep interface implementations
--keep class * implements com.KTA.devicespoof.hook.interfaces.IHookModule { *; }
-
-# Keep all methods that might be called by reflection
--keepclassmembers class * {
-    @de.robv.android.xposed.** *;
-}
-
-# Keep SystemProperties related classes
--keep class android.os.SystemProperties { *; }
-
-# Keep Settings.Secure related classes
--keep class android.provider.Settings$Secure { *; }
-
-# Keep Build related classes
--keep class android.os.Build { *; }
--keep class android.os.Build$VERSION { *; }
-
-# Disable warnings for Xposed API
--dontwarn de.robv.android.xposed.**
-
-# Keep line numbers for debugging
--keepattributes SourceFile,LineNumberTable
-
-# Preserve the special static methods that are required in all enumeration classes.
+# Giữ lại các lớp enum để Proguard không xóa các phương thức values() và valueOf()
 -keepclassmembers enum * {
     public static **[] values();
     public static ** valueOf(java.lang.String);
 }
+-keepnames class kotlinx.serialization.internal.*
 
-# Keep Kotlin metadata
--keep class kotlin.Metadata { *; }
+# Giữ lại các lớp của các thư viện bên thứ ba nếu cần
+# Thư viện của Rikka
+-keep class dev.rikka.** { *; }
+-keep interface dev.rikka.** { *; }
 
-# Keep refine related classes
--keep class dev.rikka.tools.refine.** { *; }
+# Các quy tắc chung cho AndroidX
+-keep class androidx.preference.Preference* { *; }
+-keep,allowoptimization class * extends androidx.preference.PreferenceFragmentCompat
+
+# Giữ lại các lớp ViewBinding được tạo tự động
+-keepclassmembers class **.databinding.* {
+    <init>(...);
+}

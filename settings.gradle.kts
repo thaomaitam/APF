@@ -1,3 +1,5 @@
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
     repositories {
         google()
@@ -5,13 +7,18 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
-        maven(url = "https://api.xposed.info/")
+        // Cho thư viện của Rikka và các thư viện khác trên Jitpack
+        maven("https://jitpack.io")
+        // Cho API của Xposed
+        maven("https://api.xposed.info/")
     }
 }
-rootProject.name = "EzXHepler-Faker"
-include(":app")
+
+rootProject.name = "APF"
+include(":app", ":xposed")

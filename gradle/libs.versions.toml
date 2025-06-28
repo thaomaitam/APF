@@ -1,19 +1,61 @@
 [versions]
-kotlin = "2.1.21"
-agp = "8.10.1"
+agp = "8.2.2"
+kotlin = "1.9.23"
+coreKtx = "1.12.0"
+appcompat = "1.6.1"
+material = "1.11.0"
+constraintlayout = "2.1.4"
+preferenceKtx = "1.2.1"
+navigation = "2.7.7"
+lifecycle = "2.7.0"
+kotlinxSerializationJson = "1.6.3"
+viewbindingpropertydelegate = "1.5.9"
 xposed = "82"
-annotation = "1.8.1"
+
+# Rikka's Libraries
 hidden-api = "4.4.0"
+rikkaMaterial = "2.7.2"
+rikkaPreference = "2.0.0"
+appiconloader = "1.5.0"
 
 [libraries]
-xposed-api = { module = "de.robv.android.xposed:api", version.ref = "xposed" }
-androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "annotation" }
-dev-rikka-hidden-compat = { module = "dev.rikka.hidden:compat", version.ref = "hidden-api" }
-dev-rikka-hidden-stub = { module = "dev.rikka.hidden:stub", version.ref = "hidden-api" }
+# AndroidX Core
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+androidx-preference-ktx = { group = "androidx.preference", name = "preference-ktx", version.ref = "preferenceKtx" }
+
+# Material Design
+google-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+# Navigation
+androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation" }
+androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation" }
+
+# Lifecycle (ViewModel)
+androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+
+# Kotlinx Serialization
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+
+# 3rd Party UI/Util
+kirich1409-viewbindingpropertydelegate = { group = "com.github.kirich1409", name = "viewbindingpropertydelegate-noreflection", version.ref = "viewbindingpropertydelegate" }
+zhanghai-appiconloader = { group = "me.zhanghai.android.appiconloader", name = "appiconloader", version.ref = "appiconloader" }
+
+# Xposed
+xposed-api = { group = "de.robv.android.xposed", name = "api", version.ref = "xposed" }
+
+# Rikka's Libraries (for hidden APIs and modern UI)
+rikka-hidden-compat = { group = "dev.rikka.hidden", name = "compat", version.ref = "hidden-api" }
+rikka-hidden-stub = { group = "dev.rikka.hidden", name = "stub", version.ref = "hidden-api" }
+rikka-material = { group = "dev.rikka.rikkax.material", name = "material", version.ref = "rikkaMaterial" }
+rikka-material-preference = { group = "dev.rikka.rikkax.material", name = "material-preference", version.ref = "rikkaPreference" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
-
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-refine = { id = "dev.rikka.tools.refine", version = "4.4.0" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+navigation-safeargs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigation" }
+rikka-refine = { id = "dev.rikka.tools.refine", version.ref = "hidden-api" }

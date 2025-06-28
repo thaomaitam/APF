@@ -1,115 +1,78 @@
-import com.android.build.gradle.tasks.PackageAndroidArtifact
-import java.io.FileInputStream
-import java.nio.charset.StandardCharsets
-import java.util.Properties
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-	alias(libs.plugins.refine)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.navigation.safeargs)
+    alias(libs.plugins.rikka.refine)
 }
 
-val keystorePropertiesFile: File = rootProject.file("keystore.properties")
-val keystoreProperties = if (keystorePropertiesFile.exists() && keystorePropertiesFile.isFile) {
-    Properties().apply {
-        load(FileInputStream(keystorePropertiesFile))
-    }
-} else null
-
-fun String.execute(): String =
-    Runtime.getRuntime().exec(split("\\s".toRegex()).toTypedArray())
-        .let { proc ->
-            proc.waitFor()
-            val result = proc.inputStream.use {
-                it.readBytes()
-            }.toString(StandardCharsets.UTF_8).trim()
-            proc.destroy()
-            result
-        }
-
-
-val gitCommitCount = "git rev-list HEAD --count".execute().toInt()
-val gitCommitHash = "git rev-parse --verify --short HEAD".execute()
-
 android {
-    compileSdk = 35
-    signingConfigs {
-        if (keystoreProperties != null) {
-            create("release") {
-                keyAlias = keystoreProperties["keyAlias"] as String
-                keyPassword = keystoreProperties["keyPassword"] as String
-                storeFile = file(keystoreProperties["storeFile"] as String)
-                storePassword = keystoreProperties["storePassword"] as String
-            }
-        }
-    }
+    namespace = "com.KTA.APF"
+    compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.KTA.devicespoof"
+        applicationId = "com.KTA.APF"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 34
         versionCode = 1
-        versionName = "$gitCommitCount-$gitCommitHash"
+        versionName = "1.0"
 
-        base.archivesName = "KTA-$versionName"
-        ndk {
-            //noinspection ChromeOsAbiSupport
-            abiFilters += "arm64-v8a"
-        }
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
     buildFeatures {
-        buildConfig = true
+        viewBinding = true
+        buildConfig = true // Cần thiết để sử dụng BuildConfig.DEBUG
     }
+
     buildTypes {
         release {
             isMinifyEnabled = true
-            isShrinkResources = true
+            isShrinkResources = true // Loại bỏ tài nguyên không dùng đến
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                ("proguard-rules.pro")
+                "proguard-rules.pro"
             )
-            val releaseSig = signingConfigs.findByName("release")
-            signingConfig = if (releaseSig != null) releaseSig else {
-                println("use debug signing config")
-                signingConfigs["debug"]
-            }
         }
     }
-    dependenciesInfo {
-        includeInApk = false
-        includeInBundle = false
-    }
-    androidResources.additionalParameters += listOf(
-        "--allow-reserved-package-id",
-        "--package-id",
-        "0x68"
-    )
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = "17"
-    }
-    namespace = "com.KTA.devicespoof"
-    packaging {
-        resources {
-            excludes += "**"
-        }
-    }
-    // https://stackoverflow.com/a/77745844
-    tasks.withType<PackageAndroidArtifact> {
-        doFirst { appMetadata.asFile.orNull?.writeText("") }
-    }
-
-    lint {
-        checkReleaseBuilds = false
+        jvmTarget = "1.8"
     }
 }
 
 dependencies {
-    compileOnly(libs.xposed.api)
-    compileOnly(libs.androidx.annotation)
-	implementation(libs.dev.rikka.hidden.compat)
-    compileOnly(libs.dev.rikka.hidden.stub)
+    // Đóng gói module :xposed vào trong APK của :app
+    // Điều này đảm bảo khi người dùng cài đặt app, module hook cũng được cài đặt.
+    implementation(project(":xposed"))
+
+    // AndroidX & UI Libraries
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.google.material)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.preference.ktx)
+
+    // Navigation Component
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+
+    // ViewModel
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    
+    // Kotlinx Serialization for JSON
+    implementation(libs.kotlinx.serialization.json)
+
+    // 3rd Party UI/Util
+    implementation(libs.kirich1409.viewbindingpropertydelegate)
+    implementation(libs.zhanghai.appiconloader) // Để tải icon app hiệu quả
+
+    // Rikka's Libraries for UI
+    implementation(libs.rikka.material)
+    implementation(libs.rikka.material.preference)
+    implementation(libs.rikka.hidden.compat)
+    compileOnly(libs.rikka.hidden.stub)
 }

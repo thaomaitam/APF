@@ -5,6 +5,6 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
 }
 
-tasks.register("Delete", Delete::class) {
+tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
 }
