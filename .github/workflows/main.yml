@@ -30,12 +30,12 @@ jobs:
       - name: Build with Gradle
         run: |
           chmod +x ./gradlew
-          ./gradlew assembleRelease
+          ./gradlew clean assembleRelease
 
       - name: Upload app
         uses: actions/upload-artifact@v4
         with:
-          name: APF
+          name: EzXHepler-Faker
           path: app/build/outputs
 
       - name: Set ci tag

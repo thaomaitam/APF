@@ -1,137 +1,73 @@
 package com.KTA.devicespoof.hook
 
+import de.robv.android.xposed.callbacks.XC_LoadPackage
+import com.KTA.devicespoof.hook.interfaces.IHookModule
+import com.KTA.devicespoof.hook.impl.SystemPropertiesHook
 import com.KTA.devicespoof.hook.impl.AndroidIdHook
 import com.KTA.devicespoof.hook.impl.BuildHook
-import com.KTA.devicespoof.hook.impl.ImeiHook
-import com.KTA.devicespoof.hook.impl.MacAddressHook
-import com.KTA.devicespoof.hook.impl.SystemPropertiesHook
-import com.KTA.devicespoof.hook.impl.SimInfoHook
-import com.KTA.devicespoof.hook.impl.NetworkInfoHook
-import com.KTA.devicespoof.hook.impl.AdditionalIdsHook
-import com.KTA.devicespoof.hook.interfaces.IHookModule
-import com.KTA.devicespoof.profile.DeviceInfo
 import com.KTA.devicespoof.utils.Logger
-import de.robv.android.xposed.callbacks.XC_LoadPackage
 
 class HookManager {
-
-    private val hookModules: MutableList<IHookModule> = mutableListOf()
-
-    /**
-     * Initializes hooks for the given package and DeviceInfo.
-     * Only modules with relevant data in DeviceInfo are initialized.
-     * @param lpparam Load package parameters from Xposed.
-     * @param deviceInfo The DeviceInfo containing spoofed data.
-     */
-    fun initializeHooks(lpparam: XC_LoadPackage.LoadPackageParam, deviceInfo: DeviceInfo) {
-        hookModules.clear() // Clear previous hooks for this package
-        addRelevantHooks(deviceInfo)
+    
+    private val hookModules = mutableListOf<IHookModule>()
+    
+    fun initializeHooks(lpparam: XC_LoadPackage.LoadPackageParam) {
+        Logger.log("Initializing hook modules...")
         
+        // Register all hook modules
+        registerHookModule(SystemPropertiesHook())
+        registerHookModule(AndroidIdHook())
+        registerHookModule(BuildHook())
+        
+        // Initialize all registered modules
         hookModules.forEach { module ->
             try {
-                Logger.log("HookManager: Initializing ${module.getModuleName()} for ${lpparam.packageName}")
-                module.setDeviceInfo(deviceInfo)
                 module.initialize(lpparam)
+                Logger.log("Successfully initialized: ${module.getModuleName()}")
             } catch (e: Exception) {
-                module.onError(e)
+                Logger.error("Failed to initialize ${module.getModuleName()}", e)
             }
         }
-        Logger.log("HookManager: Initialized ${hookModules.size} hooks for ${lpparam.packageName}")
+        
+        Logger.log("Hook manager initialization completed with ${hookModules.size} modules")
     }
-
-    /**
-     * Adds hook modules based on non-empty DeviceInfo fields.
-     * @param deviceInfo The DeviceInfo to check for available data.
-     */
-    private fun addRelevantHooks(deviceInfo: DeviceInfo) {
-        if (!deviceInfo.androidId.isNullOrBlank()) {
-            hookModules.add(AndroidIdHook())
-        }
-        if (!deviceInfo.buildFingerprint.isNullOrBlank() || 
-            !deviceInfo.buildDevice.isNullOrBlank() || 
-            !deviceInfo.buildProduct.isNullOrBlank() || 
-            !deviceInfo.buildBrand.isNullOrBlank() || 
-            !deviceInfo.buildHardware.isNullOrBlank() || 
-            !deviceInfo.buildBoard.isNullOrBlank() || 
-            !deviceInfo.buildId.isNullOrBlank() || 
-            !deviceInfo.buildDisplay.isNullOrBlank() || 
-            !deviceInfo.buildType.isNullOrBlank() || 
-            !deviceInfo.buildTags.isNullOrBlank() || 
-            !deviceInfo.buildVersionRelease.isNullOrBlank() || 
-            !deviceInfo.buildVersionIncremental.isNullOrBlank() || 
-            !deviceInfo.buildVersionCodename.isNullOrBlank() || 
-            !deviceInfo.buildVersionSecurityPatch.isNullOrBlank()) {
-            hookModules.add(BuildHook())
-            hookModules.add(SystemPropertiesHook())
-        }
-        if (!deviceInfo.imei1.isNullOrBlank() || !deviceInfo.imei2.isNullOrBlank()) {
-            hookModules.add(ImeiHook())
-        }
-        if (!deviceInfo.wifiMac.isNullOrBlank() || !deviceInfo.bluetoothMac.isNullOrBlank()) {
-            hookModules.add(MacAddressHook())
-        }
-        if (!deviceInfo.wifiSsid.isNullOrBlank() || !deviceInfo.wifiBssid.isNullOrBlank()) {
-            hookModules.add(NetworkInfoHook())
-        }
-        if (!deviceInfo.simSerial.isNullOrBlank() || 
-            !deviceInfo.mobileNumber.isNullOrBlank() || 
-            !deviceInfo.simOperator.isNullOrBlank() || 
-            !deviceInfo.simSubscriberId.isNullOrBlank() || 
-            !deviceInfo.simCountry.isNullOrBlank() || 
-            !deviceInfo.simMnc.isNullOrBlank()) {
-            hookModules.add(SimInfoHook())
-        }
-        if (!deviceInfo.adsId.isNullOrBlank() || 
-            !deviceInfo.mediaDrmId.isNullOrBlank() || 
-            !deviceInfo.gsfId.isNullOrBlank()) {
-            hookModules.add(AdditionalIdsHook())
-        }
+    
+    private fun registerHookModule(module: IHookModule) {
+        hookModules.add(module)
+        Logger.log("Registered hook module: ${module.getModuleName()}")
     }
-
-    /**
-     * Enables all initialized hooks.
-     */
+    
     fun enableAllHooks() {
-        hookModules.sortedByDescending { it.getPriority() }.forEach { module ->
+        hookModules.forEach { module ->
             try {
-                if (!module.isHookActive()) {
-                    module.enableHook()
-                    Logger.log("HookManager: Enabled ${module.getModuleName()}")
-                }
+                module.enableHook()
+                Logger.log("Enabled hook: ${module.getModuleName()}")
             } catch (e: Exception) {
-                module.onError(e)
+                Logger.error("Failed to enable ${module.getModuleName()}", e)
             }
         }
     }
-
-    /**
-     * Disables all hooks and cleans up resources.
-     */
+    
     fun disableAllHooks() {
         hookModules.forEach { module ->
             try {
-                if (module.isHookActive()) {
-                    module.disableHook()
-                    Logger.log("HookManager: Disabled ${module.getModuleName()}")
-                }
+                module.disableHook()
+                Logger.log("Disabled hook: ${module.getModuleName()}")
             } catch (e: Exception) {
-                module.onError(e)
+                Logger.error("Failed to disable ${module.getModuleName()}", e)
             }
         }
     }
-
-    /**
-     * Cleans up all hook modules.
-     */
-    fun cleanup() {
-        hookModules.forEach { module ->
-            try {
-                module.cleanup()
-                Logger.log("HookManager: Cleaned up ${module.getModuleName()}")
-            } catch (e: Exception) {
-                module.onError(e)
-            }
-        }
-        hookModules.clear()
+    
+    fun getHookModule(name: String): IHookModule? {
+        return hookModules.find { it.getModuleName() == name }
+    }
+    
+    fun getActiveHookCount(): Int {
+        return hookModules.count { it.isHookActive() }
+    }
+    
+    fun getAllHookModules(): List<IHookModule> {
+        return hookModules.toList()
     }
 }

@@ -13,5 +13,5 @@ dependencyResolutionManagement {
         maven(url = "https://api.xposed.info/")
     }
 }
-rootProject.name = "APF"
+rootProject.name = "EzXHepler-Faker"
 include(":app")

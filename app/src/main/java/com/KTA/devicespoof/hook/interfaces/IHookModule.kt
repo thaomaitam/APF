@@ -1,66 +1,57 @@
 package com.KTA.devicespoof.hook.interfaces
 
-import com.KTA.devicespoof.profile.DeviceInfo
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 
 interface IHookModule {
-
+    
     /**
-     * Sets the DeviceInfo for this hook module, providing spoofed data from the selected profile.
-     * Called by HookManager before initialization.
-     * @param deviceInfo The DeviceInfo object containing spoofed data.
-     */
-    fun setDeviceInfo(deviceInfo: DeviceInfo)
-
-    /**
-     * Initializes the hook module with the given load package parameters.
-     * Uses the DeviceInfo set by setDeviceInfo to configure hooks.
-     * @param lpparam Load package parameters from the Xposed framework.
+     * Initialize the hook module with the given load package parameters
+     * @param lpparam Load package parameters from Xposed framework
      */
     fun initialize(lpparam: XC_LoadPackage.LoadPackageParam)
-
+    
     /**
-     * Enables the hook module, applying the configured hooks.
+     * Enable the hook functionality
      */
     fun enableHook()
-
+    
     /**
-     * Disables the hook module, stopping any active hooks.
+     * Disable the hook functionality
      */
     fun disableHook()
-
+    
     /**
-     * Checks if the hook is currently active.
-     * @return True if the hook is active, false otherwise.
+     * Check if the hook is currently active
+     * @return true if hook is active, false otherwise
      */
     fun isHookActive(): Boolean
-
+    
     /**
-     * Returns the name of the hook module for identification.
-     * @return The module name.
+     * Get the name of this hook module
+     * @return Module name as string
      */
     fun getModuleName(): String
-
+    
     /**
-     * Returns a description of the hook module’s purpose.
-     * @return The module description.
+     * Get description of what this hook module does
+     * @return Description as string
      */
     fun getDescription(): String
-
+    
     /**
-     * Returns the priority of the hook module (higher means executed first).
-     * @return The priority value.
+     * Get the priority of this hook module (higher priority modules are initialized first)
+     * @return Priority as integer
      */
     fun getPriority(): Int
-
+    
     /**
-     * Handles errors that occur during hook initialization or execution.
-     * @param error The exception encountered.
+     * Called when the hook module encounters an error
+     * @param error The exception that occurred
      */
     fun onError(error: Exception)
-
+    
     /**
-     * Cleans up resources or state when the hook module is no longer needed.
+     * Clean up resources when the module is being destroyed
      */
     fun cleanup()
 }

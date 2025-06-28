@@ -1,5 +1,4 @@
 import com.android.build.gradle.tasks.PackageAndroidArtifact
-import com.google.protobuf.gradle.id
 import java.io.FileInputStream
 import java.nio.charset.StandardCharsets
 import java.util.Properties
@@ -8,7 +7,6 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
 	alias(libs.plugins.refine)
-	alias(libs.plugins.protobuf)
 }
 
 val keystorePropertiesFile: File = rootProject.file("keystore.properties")
@@ -61,11 +59,6 @@ android {
     }
     buildFeatures {
         buildConfig = true
-        compose = true // Habilita o Compose no projeto
-    }
-    composeOptions {
-        // Define a versão do compilador do Compose
-        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
     buildTypes {
         release {
@@ -114,40 +107,9 @@ android {
     }
 }
 
-protobuf {
-    protoc {
-        artifact = libs.protobuf.protoc.get().toString()
-    }
-
-    generateProtoTasks {
-        all().forEach { task ->
-            task.builtins {
-                id("java") {
-                    option("lite")
-                }
-                id("kotlin") {
-                    option("lite")
-                }
-            }
-        }
-    }
-}
-
 dependencies {
     compileOnly(libs.xposed.api)
     compileOnly(libs.androidx.annotation)
 	implementation(libs.dev.rikka.hidden.compat)
     compileOnly(libs.dev.rikka.hidden.stub)
-	implementation(libs.protobuf.kotlin)
-    implementation(libs.protobuf.java)
-    compileOnly(libs.protobuf.protoc)
-	implementation(libs.androidx.core.ktx)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.navigation.compose)
-    implementation(libs.androidx.compose.runtime)
 }
