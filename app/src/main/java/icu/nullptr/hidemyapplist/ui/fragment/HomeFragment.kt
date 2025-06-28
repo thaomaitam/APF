@@ -84,9 +84,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         )
 
         // Tải quảng cáo nếu cần
-        runCatching {
-            binding.adBanner.loadAd(AdRequest.Builder().build())
-        }
         
         // --- Cập nhật OnClickListener ---
 

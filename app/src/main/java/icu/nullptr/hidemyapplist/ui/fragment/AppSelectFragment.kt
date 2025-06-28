@@ -85,9 +85,6 @@ abstract class AppSelectFragment : Fragment(R.layout.fragment_app_select) {
             onMenuOptionSelected = this::onMenuOptionSelected
         )
 
-        runCatching {
-            binding.adBanner.loadAd(AdRequest.Builder().build())
-        }
         with(binding.toolbar.menu) {
             val searchView = findItem(R.id.menu_search).actionView as SearchView
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {

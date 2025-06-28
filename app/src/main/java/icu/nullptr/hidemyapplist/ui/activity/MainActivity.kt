@@ -24,8 +24,6 @@ class MainActivity : MaterialActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
         setupWithNavController(binding.bottomNav, navController)
-
-        MobileAds.initialize(this)
     }
 
     override fun onSupportNavigateUp(): Boolean {
