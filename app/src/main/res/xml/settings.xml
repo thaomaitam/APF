@@ -1,26 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Nhóm: Ngôn ngữ & Dịch thuật -->
     <PreferenceCategory android:title="@string/settings_language">
+        <!-- Tùy chọn thay đổi ngôn ngữ ứng dụng -->
         <rikka.preference.SimpleMenuPreference
             android:defaultValue="SYSTEM"
             android:icon="@drawable/outline_language_24"
             android:key="language"
             android:summary="%s"
             android:title="@string/settings_language" />
+        
+        <!-- Liên kết đến trang dịch thuật Crowdin -->
         <Preference
             android:icon="@drawable/outline_translate_24"
             android:key="translation"
             android:title="@string/settings_translate" />
     </PreferenceCategory>
 
+    <!-- Nhóm: Giao diện & Chủ đề -->
     <PreferenceCategory android:title="@string/settings_theme">
+        <!-- Bật/tắt việc sử dụng màu sắc động của hệ thống (Material You) -->
         <SwitchPreference
             android:defaultValue="true"
             android:disableDependentsState="true"
             android:icon="@drawable/outline_palette_24"
             android:key="followSystemAccent"
             android:title="@string/settings_system_theme_color" />
+            
+        <!-- Chọn màu chủ đạo của ứng dụng (khi không dùng màu hệ thống) -->
         <rikka.preference.SimpleMenuPreference
             android:defaultValue="MATERIAL_BLUE"
             android:dependency="followSystemAccent"
@@ -30,6 +39,8 @@
             android:key="themeColor"
             android:summary="%s"
             android:title="@string/settings_theme_color" />
+            
+        <!-- Chọn chế độ sáng/tối -->
         <rikka.preference.SimpleMenuPreference
             android:defaultValue="-1"
             android:entries="@array/theme_texts"
@@ -37,7 +48,9 @@
             android:icon="@drawable/outline_dark_mode_24"
             android:key="darkTheme"
             android:summary="%s"
-            android:title="@string/dark_theme" />
+            android:title="@string/settings_dark_theme" />
+            
+        <!-- Tùy chọn nền đen tuyền cho màn hình OLED -->
         <SwitchPreference
             android:icon="@drawable/outline_invert_colors_24"
             android:key="blackDarkTheme"
@@ -45,16 +58,15 @@
             android:title="@string/settings_pure_black_dark_theme" />
     </PreferenceCategory>
 
+    <!-- Nhóm: Cài đặt Module & Gỡ lỗi -->
     <PreferenceCategory android:title="@string/settings_module">
-        <Preference
-            android:icon="@drawable/outline_storage_24"
-            android:key="dataIsolation"
-            android:title="@string/settings_data_isolation"
-            app:fragment="icu.nullptr.hidemyapplist.ui.fragment.SettingsFragment$DataIsolationPreferenceFragment" />
+        <!-- Bật/tắt log chi tiết -->
         <SwitchPreference
             android:icon="@drawable/outline_bug_report_24"
             android:key="detailLog"
             android:title="@string/settings_detail_log" />
+            
+        <!-- Chọn kích thước bộ đệm log -->
         <rikka.preference.SimpleMenuPreference
             android:defaultValue="512"
             android:entries="@array/max_log_size_entries"
@@ -63,6 +75,8 @@
             android:key="maxLogSize"
             android:summary="%s"
             android:title="@string/settings_max_log_size" />
+            
+        <!-- Ẩn/hiện icon ứng dụng khỏi launcher -->
         <SwitchPreference
             android:icon="@drawable/outline_hide_image_24"
             android:key="hideIcon"
@@ -70,12 +84,16 @@
             android:title="@string/settings_hide_icon" />
     </PreferenceCategory>
 
+    <!-- Nhóm: Quản lý Service -->
     <PreferenceCategory android:title="@string/settings_service">
+        <!-- Dừng service trung tâm (dùng để gỡ lỗi) -->
         <Preference
             android:icon="@drawable/outline_stop_circle_24"
             android:key="stopSystemService"
             android:summary="@string/settings_stop_system_service_summary"
             android:title="@string/settings_stop_system_service" />
+            
+        <!-- Xóa các file cache của service (dùng để gỡ lỗi) -->
         <Preference
             android:icon="@drawable/outline_cleaning_services_24"
             android:key="forceCleanEnv"
@@ -83,17 +101,9 @@
             android:title="@string/settings_force_clean_env" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/settings_update">
-        <SwitchPreference
-            android:disableDependentsState="true"
-            android:icon="@drawable/outline_update_disabled_24"
-            android:key="disableUpdate"
-            android:title="@string/settings_disable_update" />
-        <SwitchPreference
-            android:dependency="disableUpdate"
-            android:icon="@drawable/outline_speed_24"
-            android:key="receiveBetaUpdate"
-            android:summary="@string/settings_receive_beta_update_summary"
-            android:title="@string/settings_receive_beta_update" />
-    </PreferenceCategory>
+    <!-- 
+        Mục "Cập nhật" (Update) đã được xóa hoàn toàn.
+        Mục "Data Isolation" đã được xóa hoàn toàn.
+    -->
+
 </PreferenceScreen>

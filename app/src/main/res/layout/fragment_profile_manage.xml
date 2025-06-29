@@ -3,8 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".ui.fragment.ProfileManageFragment">
 
+    <!-- Thanh công cụ (Toolbar) -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
@@ -14,68 +16,76 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
-            android:elevation="0dp" />
+            app:navigationIcon="@drawable/baseline_arrow_back_24"
+            app:title="@string/title_profile_manage" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <!-- Thẻ Hướng dẫn sử dụng (đã cập nhật text) -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/hint_card"
             style="@style/AppTheme.OutlinedCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/info_card_margin_horizontal"
-            android:layout_marginTop="10dp"
-            android:transitionName="transition_manage">
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingHorizontal="@dimen/item_padding_horizontal"
-                android:paddingVertical="@dimen/item_padding_vertical"
-                tools:ignore="UseCompoundDrawables">
+                android:padding="16dp">
 
                 <ImageView
                     style="@style/AppTheme.SideImage"
                     android:src="@drawable/outline_info_24"
+                    app:tint="?attr/colorPrimary"
                     tools:ignore="ContentDescription" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:text="@string/template_usage_hint"
+                    android:layout_weight="1"
+                    android:text="@string/profile_usage_hint"
                     android:textAppearance="?textAppearanceBodyMedium" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- Nút Tạo Hồ sơ mới (thay thế 2 nút cũ) -->
         <icu.nullptr.hidemyapplist.ui.view.ListItemView
-            android:id="@+id/new_blacklist_template"
+            android:id="@+id/new_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="16dp"
+            android:clickable="true"
+            android:focusable="true"
             app:icon="@drawable/baseline_add_24"
-            app:text="@string/template_new_blacklist" />
+            app:text="@string/profile_new" />
 
-        <icu.nullptr.hidemyapplist.ui.view.ListItemView
-            android:id="@+id/new_whitelist_template"
+        <!-- Vạch ngăn cách -->
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:icon="@drawable/baseline_add_24"
-            app:text="@string/template_new_whitelist" />
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="16dp"
+            android:background="?attr/colorOutline" />
 
-        <include layout="@layout/line" />
-
+        <!-- Danh sách các Profile (đã cập nhật ID) -->
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/template_list"
+            android:id="@+id/profile_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="10dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:paddingBottom="16dp"
+            tools:itemCount="5"
+            tools:listitem="@layout/list_item_view" />
+
     </LinearLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
