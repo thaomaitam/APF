@@ -8,6 +8,7 @@ import icu.nullptr.hidemyapplist.common.BuildConfig
 import icu.nullptr.hidemyapplist.common.Constants
 import icu.nullptr.hidemyapplist.common.IAPFService
 import icu.nullptr.hidemyapplist.common.JsonConfig
+import icu.nullptr.hidemyapplist.common.AndroidProfile
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
