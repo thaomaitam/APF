@@ -110,6 +110,7 @@
     <string name="logs_clear">Xóa Nhật ký</string>
     <string name="logs_empty">Không có nhật ký để lưu</string>
     <string name="logs_saved">Nhật ký đã được lưu</string>
+    <string name="do_not_dual">Vui lòng cài đặt ứng dụng chỉ một lần, không nhân bản.</string>
 
     <!-- Cài đặt (SettingsFragment) -->
     <string name="settings_module">Module</string>

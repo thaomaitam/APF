@@ -5,7 +5,7 @@ package icu.nullptr.hidemyapplist.ui.adapter
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tsng.hidemyapplist.R
-import icu.nullptr.hidemyapplist.common.JsonConfig
+import icu.nullptr.hidemyapplist.common.AndroidProfile
 import icu.nullptr.hidemyapplist.ui.view.ListItemView
 
 // Adapter để hiển thị danh sách các AndroidProfile
@@ -15,7 +15,7 @@ class ProfileAdapter(
 
     private var profileNames: List<String> = emptyList()
 
-    fun submitList(profiles: Map<String, JsonConfig.AndroidProfile>) {
+    fun submitList(profiles: Map<String, AndroidProfile>) {
         profileNames = profiles.keys.sorted() // Sắp xếp theo tên cho dễ nhìn
         notifyDataSetChanged()
     }
