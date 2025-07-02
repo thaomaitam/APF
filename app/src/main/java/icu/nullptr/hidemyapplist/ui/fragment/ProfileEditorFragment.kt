@@ -14,7 +14,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.tsng.hidemyapplist.R
 import com.tsng.hidemyapplist.databinding.FragmentProfileEditorBinding
-import icu.nullptr.hidemyapplist.common.JsonConfig
+import icu.nullptr.hidemyapplist.common.AndroidProfile
 import icu.nullptr.hidemyapplist.service.ConfigManager
 import icu.nullptr.hidemyapplist.ui.util.setupToolbar
 import java.util.*
@@ -25,7 +25,7 @@ class ProfileEditorFragment : Fragment(R.layout.fragment_profile_editor) {
     private val binding by viewBinding<FragmentProfileEditorBinding>()
     private val args: ProfileEditorFragmentArgs by navArgs()
 
-    private var currentProfile: JsonConfig.AndroidProfile? = null
+    private var currentProfile: AndroidProfile? = null
     private var originalProfileName: String? = null
     private var isCreatingNew: Boolean = true
 
@@ -79,7 +79,7 @@ class ProfileEditorFragment : Fragment(R.layout.fragment_profile_editor) {
 
     private fun loadProfileData() {
         if (isCreatingNew) {
-            currentProfile = JsonConfig.AndroidProfile()
+            currentProfile = AndroidProfile()
             binding.editProfileName.requestFocus()
         } else {
             currentProfile = ConfigManager.getProfile(originalProfileName!!)
@@ -105,8 +105,8 @@ class ProfileEditorFragment : Fragment(R.layout.fragment_profile_editor) {
         }
     }
 
-    private fun collectDataFromViews(): JsonConfig.AndroidProfile {
-        return JsonConfig.AndroidProfile(
+    private fun collectDataFromViews(): AndroidProfile {
+        return AndroidProfile(
             imei1 = binding.editImei1.text.toString().ifEmpty { null },
             imei2 = binding.editImei2.text.toString().ifEmpty { null },
             androidId = binding.editAndroidId.text.toString().ifEmpty { null },

@@ -3,8 +3,8 @@ package icu.nullptr.hidemyapplist.service
 import com.tsng.hidemyapplist.R
 import icu.nullptr.hidemyapplist.common.BuildConfig
 import icu.nullptr.hidemyapplist.common.JsonConfig
-import icu.nullptr.hidemyapplist.common.JsonConfig.AndroidProfile
-import icu.nullptr.hidemyapplist.common.JsonConfig.AppFakerConfig
+import icu.nullptr.hidemyapplist.common.AndroidProfile
+import icu.nullptr.hidemyapplist.common.AppFakerConfig
 import icu.nullptr.hidemyapplist.hmaApp
 import icu.nullptr.hidemyapplist.ui.util.makeToast
 
@@ -209,4 +209,9 @@ object ConfigManager {
     fun isFakerEnabled(packageName: String): Boolean {
         return config.appConfigs[packageName]?.isEnabled ?: false
     }
+
+    /**
+     * Legacy API compatible with old naming. Delegates to [isFakerEnabled].
+     */
+    fun isHideEnabled(packageName: String): Boolean = isFakerEnabled(packageName)
 }
