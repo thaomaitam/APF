@@ -16,6 +16,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.tsng.hidemyapplist.R
 import com.tsng.hidemyapplist.databinding.FragmentSettingsBinding // Layout này vẫn dùng chung
+import android.widget.Toast
 import icu.nullptr.hidemyapplist.common.AppFakerConfig
 import icu.nullptr.hidemyapplist.service.ConfigManager
 import icu.nullptr.hidemyapplist.ui.util.setupToolbar

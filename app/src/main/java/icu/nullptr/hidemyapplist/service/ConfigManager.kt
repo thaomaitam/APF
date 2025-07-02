@@ -209,4 +209,9 @@ object ConfigManager {
     fun isFakerEnabled(packageName: String): Boolean {
         return config.appConfigs[packageName]?.isEnabled ?: false
     }
+
+    /**
+     * Legacy API compatible with old naming. Delegates to [isFakerEnabled].
+     */
+    fun isHideEnabled(packageName: String): Boolean = isFakerEnabled(packageName)
 }
