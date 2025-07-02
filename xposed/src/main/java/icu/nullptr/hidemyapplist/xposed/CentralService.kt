@@ -9,6 +9,7 @@ import icu.nullptr.hidemyapplist.common.Constants
 import icu.nullptr.hidemyapplist.common.IAPFService
 import icu.nullptr.hidemyapplist.common.JsonConfig
 import java.io.File
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.reflect.full.memberProperties
@@ -140,7 +141,9 @@ class CentralService(val pms: IPackageManager) : IAPFService.Stub() {
             val profile = config.profiles[appConfig.appliedProfileName] ?: return null
             
             return try {
-                profile::class.memberProperties.find { it.name == key }?.get(profile)
+                val prop = profile::class.memberProperties
+                    .find { it.name == key } as? kotlin.reflect.KProperty1<AndroidProfile, *>
+                prop?.get(profile)
             } catch (e: Throwable) {
                 logE(TAG, "Reflection failed for key: $key", e)
                 null
