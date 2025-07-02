@@ -105,10 +105,15 @@ class XposedEntry : IXposedHookZygoteInit, IXposedHookLoadPackage {
         try {
             // Sử dụng EzXHelper để tìm và hook constructor của lớp Application
             findConstructorOrNull("icu.nullptr.hidemyapplist.MyApp") { emptyParam }
-                ?.hookAfter {
-                    // Lấy trường 'isHooked' và set giá trị là true
-                    it.thisObject.field("isHooked").set(true)
-                    logI(TAG, "Set isHooked=true for UI application.")
+                ?.hookAfter { param ->
+                    try {
+                        val f = param.thisObject.javaClass.getDeclaredField("isHooked")
+                        f.isAccessible = true
+                        f.set(param.thisObject, true)
+                        logI(TAG, "Set isHooked=true for UI application.")
+                    } catch (t: Throwable) {
+                        logE(TAG, "Failed to set isHooked", t)
+                    }
                 }
         } catch (e: Throwable) {
             logE(TAG, "Failed to hook self", e)

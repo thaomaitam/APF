@@ -2,7 +2,7 @@ package icu.nullptr.hidemyapplist.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import icu.nullptr.hidemyapplist.common.JsonConfig
+import icu.nullptr.hidemyapplist.common.AppFakerConfig
 
 class AppSettingsViewModel(val pack: Pack) : ViewModel() {
 
@@ -18,6 +18,6 @@ class AppSettingsViewModel(val pack: Pack) : ViewModel() {
     class Pack(
         val app: String,
         var enabled: Boolean,
-        val config: JsonConfig.AppConfig
+        val config: AppFakerConfig
     )
 }

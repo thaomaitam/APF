@@ -3,8 +3,8 @@
 package icu.nullptr.hidemyapplist.xposed.hook.impl
 
 import android.os.Build
-import com.github.kyuubiran.ezxhelper.utils.logD
-import com.github.kyuubiran.ezxhelper.utils.logE
+import icu.nullptr.hidemyapplist.xposed.logD
+import icu.nullptr.hidemyapplist.xposed.logE
 import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 import icu.nullptr.hidemyapplist.xposed.CentralService
