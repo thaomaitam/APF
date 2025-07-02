@@ -110,6 +110,9 @@ class ProfileEditorFragment : Fragment(R.layout.fragment_profile_editor) {
             imei1 = binding.layoutImei1.editText?.text?.toString().orEmpty().ifEmpty { null },
             imei2 = binding.layoutImei2.editText?.text?.toString().orEmpty().ifEmpty { null },
             androidId = binding.layoutAndroidId.editText?.text?.toString().orEmpty().ifEmpty { null },
+            imei1 = binding.editImei1.text.toString().ifEmpty { null },
+            imei2 = binding.editImei2.text.toString().ifEmpty { null },
+            androidId = binding.editAndroidId.text.toString().ifEmpty { null },
             // ... collect từ tất cả các EditText khác
             buildFingerprint = binding.layoutBuildFingerprint.editText?.text?.toString().orEmpty().ifEmpty { null }
         )
