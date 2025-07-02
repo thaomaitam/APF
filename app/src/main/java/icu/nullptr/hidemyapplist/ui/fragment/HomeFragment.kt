@@ -10,7 +10,6 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.google.android.gms.ads.AdRequest
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.MaterialElevationScale
 import com.tsng.hidemyapplist.BuildConfig
@@ -150,11 +149,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             } else {
                 binding.serviceStatus.text = getString(R.string.home_xposed_service_on, serviceVersion)
             }
-            // Không còn 'filterCount'
-            binding.filterCount.visibility = View.GONE
         } else {
             binding.serviceStatus.setText(R.string.home_xposed_service_off)
-            binding.filterCount.visibility = View.GONE
         }
     }
 }

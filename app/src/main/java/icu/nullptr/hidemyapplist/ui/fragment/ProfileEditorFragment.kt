@@ -97,21 +97,24 @@ class ProfileEditorFragment : Fragment(R.layout.fragment_profile_editor) {
 
     private fun bindDataToViews() {
         currentProfile?.let {
-            binding.editImei1.setText(it.imei1)
-            binding.editImei2.setText(it.imei2)
-            binding.editAndroidId.setText(it.androidId)
+            binding.layoutImei1.editText?.setText(it.imei1)
+            binding.layoutImei2.editText?.setText(it.imei2)
+            binding.layoutAndroidId.editText?.setText(it.androidId)
             // ... bind cho tất cả các EditText khác
-            binding.editBuildFingerprint.setText(it.buildFingerprint)
+            binding.layoutBuildFingerprint.editText?.setText(it.buildFingerprint)
         }
     }
 
     private fun collectDataFromViews(): AndroidProfile {
         return AndroidProfile(
+            imei1 = binding.layoutImei1.editText?.text?.toString().orEmpty().ifEmpty { null },
+            imei2 = binding.layoutImei2.editText?.text?.toString().orEmpty().ifEmpty { null },
+            androidId = binding.layoutAndroidId.editText?.text?.toString().orEmpty().ifEmpty { null },
             imei1 = binding.editImei1.text.toString().ifEmpty { null },
             imei2 = binding.editImei2.text.toString().ifEmpty { null },
             androidId = binding.editAndroidId.text.toString().ifEmpty { null },
             // ... collect từ tất cả các EditText khác
-            buildFingerprint = binding.editBuildFingerprint.text.toString().ifEmpty { null }
+            buildFingerprint = binding.layoutBuildFingerprint.editText?.text?.toString().orEmpty().ifEmpty { null }
         )
     }
 
@@ -162,10 +165,12 @@ class ProfileEditorFragment : Fragment(R.layout.fragment_profile_editor) {
     private fun randomizeAllFields() {
         // Đây là nơi bạn sẽ viết logic tạo dữ liệu ngẫu nhiên
         // Ví dụ đơn giản:
-        binding.editImei1.setText(generateRandomNumber(15))
-        binding.editImei2.setText(generateRandomNumber(15))
-        binding.editAndroidId.setText(generateRandomHex(16))
-        binding.editBuildFingerprint.setText("google/flame/flame:${Random.nextInt(10, 13)}/A${Random.nextInt(1, 4)}.${Random.nextInt(100000, 999999)}.00${Random.nextInt(1, 9)}/${Random.nextInt(1000000, 9999999)}:user/release-keys")
+        binding.layoutImei1.editText?.setText(generateRandomNumber(15))
+        binding.layoutImei2.editText?.setText(generateRandomNumber(15))
+        binding.layoutAndroidId.editText?.setText(generateRandomHex(16))
+        binding.layoutBuildFingerprint.editText?.setText(
+            "google/flame/flame:${Random.nextInt(10, 13)}/A${Random.nextInt(1, 4)}.${Random.nextInt(100000, 999999)}.00${Random.nextInt(1, 9)}/${Random.nextInt(1000000, 9999999)}:user/release-keys"
+        )
         // ... tạo ngẫu nhiên cho các trường khác
         
         Toast.makeText(context, "Generated random values", Toast.LENGTH_SHORT).show()
