@@ -16,7 +16,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.tsng.hidemyapplist.R
 import com.tsng.hidemyapplist.databinding.FragmentSettingsBinding // Layout này vẫn dùng chung
-import icu.nullptr.hidemyapplist.common.JsonConfig
+import icu.nullptr.hidemyapplist.common.AppFakerConfig
 import icu.nullptr.hidemyapplist.service.ConfigManager
 import icu.nullptr.hidemyapplist.ui.util.setupToolbar
 import icu.nullptr.hidemyapplist.util.PackageHelper
@@ -57,7 +57,7 @@ class AppSettingsFragment : Fragment(R.layout.fragment_settings) {
     class AppPreferenceFragment : PreferenceFragmentCompat() {
 
         private lateinit var packageName: String
-        private lateinit var appFakerConfig: JsonConfig.AppFakerConfig
+        private lateinit var appFakerConfig: AppFakerConfig
 
         private lateinit var enableFakerSwitch: SwitchPreference
         private lateinit var chooseProfilePref: Preference
